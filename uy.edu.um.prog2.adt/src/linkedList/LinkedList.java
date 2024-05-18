@@ -2,8 +2,8 @@ package linkedList;
 
 public class LinkedList<T> implements MyList<T> {
 
-    Node<T> head;
-    Node<T> last;
+    ListNode<T> head;
+    ListNode<T> last;
     int size;
 
     public LinkedList(){
@@ -15,9 +15,9 @@ public class LinkedList<T> implements MyList<T> {
     @Override
     public void addFirst(T value) {
         if (head == null){
-            head = new Node<T>(value);
+            head = new ListNode<T>(value);
         } else {
-            Node<T> newNode = new Node<T>(value);
+            ListNode<T> newNode = new ListNode<T>(value);
             newNode.setNext(head);
             head = newNode;
         }
@@ -27,11 +27,11 @@ public class LinkedList<T> implements MyList<T> {
     @Override
     public void addLast(T value) {
         if (head == null){
-            head = new Node<T> (value);
+            head = new ListNode<T>(value);
             this.last = this.head;
         } else {
-            Node<T> newNode = new Node<>(value);
-            Node<T> temp = this.head;
+            ListNode<T> newNode = new ListNode<>(value);
+            ListNode<T> temp = this.head;
             while (temp.getNext() != null){
                 temp = temp.getNext();
             }
@@ -42,26 +42,66 @@ public class LinkedList<T> implements MyList<T> {
 
     @Override
     public void remove(int position) {
-
+        if (position == 0){
+            head = head.getNext();
+        } else {
+            int contador = 0;
+            ListNode<T> temp = head;
+            while (contador < position - 1){
+                temp = temp.getNext();
+                contador++;
+            }
+            temp.setNext(temp.getNext().getNext());
+        }
+        size--;
     }
 
     @Override
     public T getValueNode(int position) {
-        return null;
+        int contador = 0;
+        ListNode<T> temp = this.head;
+        T retorno = null;
+        while (contador != position && temp != null){
+            temp = temp.getNext();
+            contador++;
+        }
+        if (contador == position){
+            retorno = temp.getValue();
+        }
+        return retorno;
     }
 
     @Override
     public boolean contains(T value) {
-        return false;
+        ListNode<T> temp = this.head;
+        boolean encontrar = false;
+        while (temp != null && temp.getValue().equals(value)) {
+            temp = temp.getNext();
+        }
+        if (temp != null) {
+            encontrar = true;
+        }
+        return encontrar;
     }
 
     @Override
-    public void cut(int index) {
-
+    public void cut (int index) {
+        int contador = 0;
+        ListNode<T> temp = head;
+        while (contador < index - 1){
+            temp = temp.getNext();
+            contador++;
+        }
+        temp.setNext(null);
+        size = index;
     }
 
     @Override
     public void printList() {
-
+        ListNode<T> temp = this.head;
+        do {
+            System.out.println(temp.getNext());
+            temp = temp.getNext();
+        } while (temp != null);
     }
 }

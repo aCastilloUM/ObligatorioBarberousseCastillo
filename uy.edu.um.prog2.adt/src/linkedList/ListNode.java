@@ -1,10 +1,10 @@
 package linkedList;
 
-public class Node<T> {
+public class ListNode<T> {
     private T value;
-    private Node<T> next;
+    private ListNode<T> next;
 
-    public Node(T value){
+    public ListNode(T value){
         this.value = value;
         this.next = null;
     }
@@ -17,11 +17,11 @@ public class Node<T> {
         this.value = value;
     }
 
-    public Node<T> getNext() {
+    public ListNode<T> getNext() {
         return next;
     }
 
-    public void setNext(Node<T> next) {
+    public void setNext(ListNode<T> next) {
         this.next = next;
     }
 }
