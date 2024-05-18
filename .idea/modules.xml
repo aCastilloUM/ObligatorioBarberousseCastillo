@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/grupoX-p2-tads.iml" filepath="$PROJECT_DIR$/.idea/grupoX-p2-tads.iml" />
-      <module fileurl="file://$PROJECT_DIR$/uy.edu.um.adt/uy.edu.um.adt.iml" filepath="$PROJECT_DIR$/uy.edu.um.adt/uy.edu.um.adt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uy.edu.um.prog2.adt/uy.edu.um.adt.iml" filepath="$PROJECT_DIR$/uy.edu.um.prog2.adt/uy.edu.um.adt.iml" />
     </modules>
   </component>
 </project>
