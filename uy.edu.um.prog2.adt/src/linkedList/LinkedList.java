@@ -41,7 +41,10 @@ public class LinkedList<T> implements MyList<T> {
     }
 
     @Override
-    public void remove(int position) {
+    public void remove(int position) throws EmptyListException {
+        if (size == 0){
+            throw new EmptyListException();
+        }
         if (position == 0){
             head = head.getNext();
         } else {
