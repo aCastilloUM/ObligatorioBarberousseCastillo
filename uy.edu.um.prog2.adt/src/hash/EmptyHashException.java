@@ -1,4 +1,4 @@
 package hash;
 
-public class EmptyHashException {
+public class EmptyHashException extends Exception {
 }
