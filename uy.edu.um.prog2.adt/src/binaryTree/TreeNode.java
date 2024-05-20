@@ -123,6 +123,34 @@ public class TreeNode<K,T> implements Comparable<K>{
         }
         return parent;
     }
+    public void inOrder(LinkedList<T> list) {
+        if (this.leftChild != null) {
+            this.leftChild.inOrder(list);
+        }
+        list.add(this.data);
+        if (this.rightChild != null) {
+            this.rightChild.inOrder(list);
+        }
+    }
 
+    public void preOrder(LinkedList<T> list) {
+        list.add(this.data);
+        if (this.leftChild != null) {
+            this.leftChild.preOrder(list);
+        }
+        if (this.rightChild != null) {
+            this.rightChild.preOrder(list);
+        }
+    }
+
+    public void postOrder(LinkedList<T> list) {
+        if (this.leftChild != null) {
+            this.leftChild.postOrder(list);
+        }
+        if (this.rightChild != null) {
+            this.rightChild.postOrder(list);
+        }
+        list.add(this.data);
+    }
 
 }

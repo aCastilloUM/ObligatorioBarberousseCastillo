@@ -12,6 +12,11 @@ public interface MyBinaryTree<K,T> {
 
     public void delete(K key) throws InvalidKey, EmptyTree;
 
+    void preOrder() throws EmptyTree;
+
+    void inOrder() throws EmptyTree;
+
+    void postOrder() throws EmptyTree;
 
 
 }

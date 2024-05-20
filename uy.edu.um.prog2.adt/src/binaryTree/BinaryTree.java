@@ -90,4 +90,56 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
             throw new EmptyTree();
         }
     }
+
+    public void inOrder() throws EmptyTree{
+        LinkedList<T> list = new LinkedList<>();
+        if (this.root != null) {
+            this.root.inOrder(list);
+        } else {
+            throw new EmptyTree();
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) == this.root.getData()) {
+                System.out.print(list.get(i) + " [R] ");
+            } else {
+                System.out.print(list.get(i) + " ");
+            }
+        }
+        System.out.println(" ");
+    }
+    public void preOrder() throws EmptyTree{
+        LinkedList<T> list = new LinkedList<>();
+        if (this.root != null) {
+            this.root.preOrder(list);
+        } else {
+            throw new EmptyTree();
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) == this.root.getData()) {
+                System.out.print(list.get(i) + " [R] ");
+            } else {
+                System.out.print(list.get(i)+ " ");
+            }
+        }
+        System.out.println(" ");
+    }
+    public void postOrder() throws EmptyTree{
+        LinkedList<T> list = new LinkedList<>();
+        if (this.root != null) {
+            this.root.postOrder(list);
+        } else {
+            throw new EmptyTree();
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) == this.root.getData()) {
+                System.out.println(list.get(i) + " [R] ");
+            } else {
+                System.out.print(list.get(i)+ " ");
+            }
+        }
+        System.out.println(" ");
+    }
 }
