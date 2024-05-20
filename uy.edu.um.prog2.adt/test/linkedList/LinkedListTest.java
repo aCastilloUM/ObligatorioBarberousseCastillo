@@ -1,23 +1,30 @@
 package linkedList;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinkedListTest {
-    @Test
-    public void addFirstTest() {
-        LinkedList<String> lista = new LinkedList<>();
+    LinkedList<String> lista;
+
+    @BeforeEach
+    public void iniList() {
+        lista = new LinkedList<>();
         lista.addFirst("Hola");
         lista.addFirst("Mundo");
         lista.addFirst("Chau");
+    }
+
+    @Test
+    public void addFirstTest() {
         assertEquals(3, lista.size);
         assertEquals("Chau", lista.getValueNode(0));
     }
 
     @Test
     public void addLastTest() {
-        LinkedList<String> lista = new LinkedList<>();
+        lista = new LinkedList<>();
         lista.addLast("Hola");
         lista.addLast("Mundo");
         lista.addLast("Chau");
@@ -27,11 +34,6 @@ class LinkedListTest {
 
     @Test
     public void removeTest() throws EmptyListException {
-        LinkedList<String> lista = new LinkedList<>();
-        lista.addFirst("Hola");
-        lista.addFirst("Mundo");
-        lista.addFirst("Chau");
-
         lista.remove(0);
 
         assertEquals(2, lista.size);
@@ -46,14 +48,8 @@ class LinkedListTest {
 
     @Test
     public void containsTest (){
-        LinkedList<String> lista = new LinkedList<>();
-        lista.addFirst("Hola");
-        lista.addFirst("Mundo");
-        lista.addLast("Chau");
         lista.addFirst("Perro");
         lista.addLast("Gato");
         assertTrue(lista.contains("Perro"));
     }
-
-
 }
