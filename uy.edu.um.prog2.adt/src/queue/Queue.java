@@ -30,6 +30,7 @@ public class Queue<T> implements MyQueue<T> {
             temp.setPrevious(newQueue);
             first = newQueue;
         }
+        size++;
     }
 
     @Override
@@ -38,11 +39,16 @@ public class Queue<T> implements MyQueue<T> {
         if (isEmpty()){
             throw new EmptyQueueException();
         }
-        while (temp.getPrevious().getPrevious() != null){
+        if (size == 1) {
+            first = null;
+            last = null;
+            size = 0;
+        } else {
             temp = temp.getPrevious();
+            first = temp;
+            first.setPrevious(null);
+            size--;
         }
-        first = temp;
-        first.setPrevious(null);
     }
 
     @Override
