@@ -32,18 +32,14 @@ public class Stack <T> implements MyStack<T>{
     @Override
     public void pop() throws EmptyStackException {
         if (size == 0) {
-            try {
-                throw new EmptyStackException();
-            } catch (EmptyStackException e) {
-                System.out.println("EmptyStackException");
-            }
+            throw new EmptyStackException();
         } else if (size == 1) {
             top = null;
+            size = 0;
         } else {
             top = top.getPrev();
+            size--;
         }
-        if (size >0) {size--;}
-
     }
 
     @Override
@@ -59,12 +55,12 @@ public class Stack <T> implements MyStack<T>{
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return (top == null && size == 0);
     }
 
     @Override
     public void printStack() {
-        ArrayList aux = new ArrayList<>();
+        ArrayList<T> aux = new ArrayList<>();
 
         while (size!=0){
             aux.add(top.getValue());
@@ -84,7 +80,7 @@ public class Stack <T> implements MyStack<T>{
 
     @Override
     public boolean containsStack(T value) {
-        ArrayList aux = new ArrayList<>();
+        ArrayList<T> aux = new ArrayList<>();
 
         while (size!=0){
             aux.add(top.getValue());
@@ -95,7 +91,7 @@ public class Stack <T> implements MyStack<T>{
         boolean exist = false;
         for (int i = 0; i<aux.size(); i++){
            if (value == ((T) aux.get(i))){
-               exist=true;
+               exist = true;
            }
         }
 
