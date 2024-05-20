@@ -52,4 +52,15 @@ class LinkedListTest {
         lista.addLast("Gato");
         assertTrue(lista.contains("Perro"));
     }
+
+    @Test
+    public void cutTest() {
+        lista.addFirst("Animales");
+        lista.addFirst("Objetos");
+        lista.addFirst("Frutas");
+
+        assertEquals(6,lista.size);
+        lista.cut(4);
+        assertEquals(4, lista.size);
+    }
 }
