@@ -12,6 +12,7 @@ public class Hash<K,V> implements MyHash<K,V> {
         this.table = (HashNode<K, V> []) new HashNode[capacity];
     }
 
+    public int getSize() {return size;}
     public int getCapacity() {
         return capacity;
     }
@@ -27,8 +28,34 @@ public class Hash<K,V> implements MyHash<K,V> {
         return sum % capacity;
     }
 
+
+    private int nextPrimeAfter(int n) {
+        n = (n % 2 == 0) ? n + 1 : n + 2; // Asegura que el número sea impar
+        while (!isPrime(n)) {
+            n += 2; // Solo comprueba números impares para mejorar la eficiencia
+        }
+        return n;
+    }
+
+    private boolean isPrime(int num) {
+        if (num <= 1) {
+            return false;
+        }
+        if (num <= 3) {
+            return true;
+        }
+        if (num % 2 == 0 || num % 3 == 0) {
+            return false;
+        }
+        for (int i = 5; i * i <= num; i += 6) {
+            if (num % i == 0 || num % (i + 2) == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
     public void resize(){
-        int newCapacity = capacity*2;
+        int newCapacity = nextPrimeAfter(capacity*2);
         HashNode<K,V> [] newTable = new HashNode[newCapacity]; //Creo un nuevo Array con la nueva capacidad
 
         //Debemos colocar los valores de la tabla anterior en la  nueva
@@ -57,7 +84,7 @@ public class Hash<K,V> implements MyHash<K,V> {
 
     public void add (K key, V value){
         //Si la cantidad de elementos de la tabla es mayor al 75% de la capacidad, agrandamos el Hash
-        if (size>capacity*0.75){resize();}
+        if (size >= capacity * 0.75) { resize(); }
         int index = hashFunction(key);
 
         //Buscamos un lugar optimo
