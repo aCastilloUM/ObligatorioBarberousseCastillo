@@ -21,6 +21,7 @@ class QueueTest {
     public void enqueueTest(){
         queue.enqueue("Perro");
 
+
         assertEquals(4, queue.size);
     }
 
@@ -39,5 +40,4 @@ class QueueTest {
             queue.dequeue();
         });
     }
-
 }

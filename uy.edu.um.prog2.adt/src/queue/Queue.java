@@ -22,6 +22,7 @@ public class Queue<T> implements MyQueue<T> {
         QueueNode<T> newQueue = new QueueNode<T>(valor);
         if (last == null){
             last = newQueue;
+            first = newQueue;
         } else {
             QueueNode<T> temp = last;
             while (temp.getPrevious() != null){

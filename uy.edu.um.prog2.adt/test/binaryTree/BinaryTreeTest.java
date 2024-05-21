@@ -83,4 +83,43 @@ public class BinaryTreeTest {
         }
     }
 
+    @Test
+    public void preOrderTest() throws EmptyTreeException {
+        LinkedList<String> expected = new LinkedList<>();
+
+        //Agrego la data de los nodos del binary tree en el orden en que deberian aparecer segun el preOrder
+        expected.addLast("A");
+        expected.addLast("B");
+        expected.addLast("D");
+        expected.addLast("E");
+        expected.addLast("C");
+        expected.addLast("F");
+        expected.addLast("G");
+
+        LinkedList<String> actual = tree.preOrder();
+
+        for (int i = 0; i < actual.getSize(); i++){
+            assertEquals(expected.getValueNode(i),actual.getValueNode(i));
+        }
+    }
+
+    @Test
+    public void postOrderTest() throws EmptyTreeException {
+        LinkedList<String> expected = new LinkedList<>();
+
+        //Agrego la data de los nodos del binary tree en el orden en que deberian aparecer segun el preOrder
+        expected.addLast("D");
+        expected.addLast("E");
+        expected.addLast("B");
+        expected.addLast("F");
+        expected.addLast("G");
+        expected.addLast("C");
+        expected.addLast("A");
+
+        LinkedList<String> actual = tree.postOrder();
+
+        for (int i = 0; i < actual.getSize(); i++){
+            assertEquals(expected.getValueNode(i),actual.getValueNode(i));
+        }
+    }
 }
