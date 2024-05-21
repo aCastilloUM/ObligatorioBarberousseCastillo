@@ -26,7 +26,7 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
         return res.getData();
     }
 
-    public TreeNode<K, T> serchNode(K key) throws EmptyTreeException, InvalidKeyException {
+    public TreeNode<K, T> searchNode(K key) throws EmptyTreeException, InvalidKeyException {
         TreeNode<K,T> aux;
         if (this.root != null) {
             aux = this.root.findNode(key);
@@ -70,7 +70,7 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
     @Override
     public void delete(K key) throws InvalidKeyException, EmptyTreeException, EmptyListException {
         if (this.root != null) {
-            TreeNode<K,T> del = this.serchNode(key);
+            TreeNode<K,T> del = this.searchNode(key);
             TreeNode<K,T> parent = this.root.getParent(key);
             if (parent.getLeftChild() == del) {
                 parent.setLeftChild(null);
