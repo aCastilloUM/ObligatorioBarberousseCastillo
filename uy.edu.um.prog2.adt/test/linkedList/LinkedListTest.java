@@ -13,6 +13,7 @@ class LinkedListTest {
         lista.addFirst("Mundo");
         lista.addFirst("Chau");
     }
+
     @Test
     public void addFirstTest() {
         assertEquals(3, lista.size);
@@ -40,6 +41,7 @@ class LinkedListTest {
             lista.remove(0);
         });
     }
+
     @Test
     public void containsTest (){
         lista.addFirst("Perro");
