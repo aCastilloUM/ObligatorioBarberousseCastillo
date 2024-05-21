@@ -25,7 +25,6 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
         return res.getData();
     }
 
-    @Override
     public TreeNode<K, T> serchNode(K key) throws EmptyTree, InvalidKey {
         TreeNode<K,T> aux;
         if (this.root != null) {
@@ -54,7 +53,6 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
 
     }
 
-    @Override
     public void addNode(TreeNode<K, T> add) throws InvalidKey {
         if (this.root == null) {
             this.root = add;
