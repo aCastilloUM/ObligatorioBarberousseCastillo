@@ -3,7 +3,7 @@ package queue;
 public class Queue<T> implements MyQueue<T> {
 
     QueueNode<T> first;
-    QueueNode<T> last;
+    QueueNode<T> last;          //Primero en entrar, primero en salir
     int size;
 
     public Queue(){
@@ -36,20 +36,34 @@ public class Queue<T> implements MyQueue<T> {
 
     @Override
     public void dequeue() throws EmptyQueueException {
-        QueueNode<T> temp = last;
         if (isEmpty()){
             throw new EmptyQueueException();
         }
+        QueueNode<T> temp = last;
         if (size == 1) {
             first = null;
             last = null;
             size = 0;
         } else {
             temp = temp.getPrevious();
-            first = temp;
-            first.setPrevious(null);
+            last = temp;
+            last.setNext(null);
             size--;
         }
+    }
+
+    public boolean contains(T value) throws EmptyQueueException {
+        QueueNode<T> temp = last;
+        if (temp == null){
+            throw new EmptyQueueException();
+        }
+        while (temp != null) {
+            if (temp.getValue().equals(value)) {
+                return true;
+            }
+            temp = temp.getPrevious();
+        }
+        return false;
     }
 
     @Override

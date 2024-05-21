@@ -8,5 +8,7 @@ public interface MyQueue<T> {
 
     void dequeue() throws EmptyQueueException;
 
+    boolean contains(T value) throws EmptyQueueException;
+
     void printQueue();
 }

@@ -10,23 +10,28 @@ class QueueTest {
     Queue<String> queue;
 
     @BeforeEach
-    public void iniQueue(){
+    public void iniQueue() throws EmptyQueueException {
         queue = new Queue<>();
         queue.enqueue("Hola");
         queue.enqueue("Mundo");
         queue.enqueue("Chau");
+        assertTrue(queue.contains("Hola"));
     }
 
     @Test
-    public void enqueueTest(){
+    public void enqueueTest() throws EmptyQueueException {
         queue.enqueue("Perro");
-
+        assertTrue(queue.contains("Perro"));
 
         assertEquals(4, queue.size);
     }
 
     @Test
     public void dequeueTest() throws EmptyQueueException {
+        assertTrue(queue.contains("Hola"));
+        assertTrue(queue.contains("Chau"));
+        assertFalse(queue.contains("Pepe"));
+
         queue.dequeue();
         assertEquals(2, queue.size);
 
