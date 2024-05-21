@@ -35,8 +35,14 @@ class LinkedListTest {
         lista.remove(0);
         assertEquals(2, lista.size);
         assertEquals("Mundo", lista.getValueNode(0));
+
+        assertTrue(lista.contains("Hola"));
         lista.remove(0);
+        assertFalse(lista.contains("Hola"));
+
         lista.remove(0);
+        assertTrue(lista.isEmpty());
+
         assertThrows(EmptyListException.class, () -> {
             lista.remove(0);
         });

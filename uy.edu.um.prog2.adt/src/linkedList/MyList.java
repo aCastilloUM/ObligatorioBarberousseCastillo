@@ -2,6 +2,8 @@ package linkedList;
 
 public interface MyList<T> {
 
+    boolean isEmpty();
+
     void addFirst(T value);
 
     void addLast (T value);

@@ -22,6 +22,9 @@ class StackTest {
     public void pushTest() throws EmptyStackException {
         assertEquals(4, stack.size);
         assertEquals("Java", stack.peek());
+
+        stack.push("Perro");
+        assertTrue(stack.containsStack("Perro"));
     }
 
     @Test
@@ -32,7 +35,10 @@ class StackTest {
 
         stack.pop();
         stack.pop();
+
+        assertTrue(stack.containsStack("Hola"));
         stack.pop();
+        assertFalse(stack.containsStack("Hola"));
         assertTrue(stack.isEmpty());
 
         assertThrows(EmptyStackException.class, () -> {

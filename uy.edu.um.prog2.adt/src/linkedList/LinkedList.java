@@ -17,6 +17,11 @@ public class LinkedList<T> implements MyList<T> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return (head == null && size == 0);
+    }
+
+    @Override
     public void addFirst(T value) {
         if (head == null){
             head = new ListNode<T>(value);

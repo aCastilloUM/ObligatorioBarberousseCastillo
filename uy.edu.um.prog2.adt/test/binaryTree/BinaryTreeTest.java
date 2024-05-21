@@ -26,6 +26,8 @@ public class BinaryTreeTest {
     public void searchTest() throws EmptyTreeException, InvalidKeyException {
         assertEquals("C", tree.search(15));
         assertEquals("D", tree.search(3));
+        assertEquals("A", tree.search(10));
+
         assertThrows(InvalidKeyException.class, () -> {
             tree.search(100);
         });
@@ -34,6 +36,7 @@ public class BinaryTreeTest {
     @Test
     public void addTest() throws InvalidKeyException {
         BinaryTree<Integer, String> emptyTree = new BinaryTree<>();
+
         emptyTree.add(10, "X");
         assertEquals("X", emptyTree.getRoot().getData());
         assertEquals(10, emptyTree.getRoot().getKey());
