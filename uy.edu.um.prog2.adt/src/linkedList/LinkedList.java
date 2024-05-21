@@ -12,6 +12,10 @@ public class LinkedList<T> implements MyList<T> {
         this.size = 0;
     }
 
+    public int getSize() {
+        return size;
+    }
+
     @Override
     public void addFirst(T value) {
         if (head == null){

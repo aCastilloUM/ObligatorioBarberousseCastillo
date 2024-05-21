@@ -2,6 +2,7 @@ package binaryTree;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import linkedList.EmptyListException;
 import linkedList.LinkedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,7 @@ public class BinaryTreeTest {
     }
 
     @Test
-    public void deleteTest() throws InvalidKey, EmptyTree {
+    public void deleteTest() throws InvalidKey, EmptyTree, EmptyListException {
         tree.delete(15);
         assertThrows(InvalidKey.class, () -> {
             tree.serch(15);

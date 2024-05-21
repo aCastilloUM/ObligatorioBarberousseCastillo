@@ -1,8 +1,6 @@
 package binaryTree;
 
-import com.sun.source.tree.Tree;
-
-import java.util.LinkedList;
+import linkedList.LinkedList;
 
 public class TreeNode<K,T> implements Comparable<K>{
     private T data;
@@ -89,7 +87,7 @@ public class TreeNode<K,T> implements Comparable<K>{
         return parent;
     }
     public void getChildList(LinkedList<TreeNode<K,T>> list) {
-        list.add(this);
+        list.addLast(this);
         if (this.leftChild != null) {
             this.leftChild.getChildList(list);
         }
@@ -127,14 +125,14 @@ public class TreeNode<K,T> implements Comparable<K>{
         if (this.leftChild != null) {
             this.leftChild.inOrder(list);
         }
-        list.add(this.data);
+        list.addLast(this.data);
         if (this.rightChild != null) {
             this.rightChild.inOrder(list);
         }
     }
 
     public void preOrder(LinkedList<T> list) {
-        list.add(this.data);
+        list.addLast(this.data);
         if (this.leftChild != null) {
             this.leftChild.preOrder(list);
         }
@@ -150,7 +148,7 @@ public class TreeNode<K,T> implements Comparable<K>{
         if (this.rightChild != null) {
             this.rightChild.postOrder(list);
         }
-        list.add(this.data);
+        list.addLast(this.data);
     }
 
 }

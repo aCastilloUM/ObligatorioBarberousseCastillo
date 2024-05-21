@@ -1,6 +1,7 @@
 package binaryTree;
 
-import java.util.LinkedList;
+import linkedList.EmptyListException;
+import linkedList.LinkedList;
 
 public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
 
@@ -67,7 +68,7 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
     }
 
     @Override
-    public void delete(K key) throws InvalidKey, EmptyTree {
+    public void delete(K key) throws InvalidKey, EmptyTree, EmptyListException {
         if (this.root != null) {
             TreeNode<K,T> del = this.serchNode(key);
             TreeNode<K,T> parent = this.root.getParent(key);
@@ -78,35 +79,28 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
             }
             LinkedList<TreeNode<K,T>> list = new LinkedList<TreeNode<K, T>>();
             del.getChildList(list);
-            list.remove();
-            for (int i = 0; i < list.size(); i ++) {
-                list.get(i).setRightChild(null);
-                list.get(i).setLeftChild(null);
-                this.addNode(list.get(i));
+            list.remove(0);
+            for (int i = 0; i < list.getSize(); i ++) {
+                list.getValueNode(i).setRightChild(null);
+                list.getValueNode(i).setLeftChild(null);
+                this.addNode(list.getValueNode(i));
             }
         } else {
             throw new EmptyTree();
         }
     }
 
-    public void inOrder() throws EmptyTree{
+    public LinkedList<T> inOrder() throws EmptyTree{
         LinkedList<T> list = new LinkedList<>();
         if (this.root != null) {
             this.root.inOrder(list);
         } else {
             throw new EmptyTree();
         }
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) == this.root.getData()) {
-                System.out.print(list.get(i) + " [R] ");
-            } else {
-                System.out.print(list.get(i) + " ");
-            }
-        }
-        System.out.println(" ");
+        return list;
     }
-    public void preOrder() throws EmptyTree{
+
+    public LinkedList<T> preOrder() throws EmptyTree{
         LinkedList<T> list = new LinkedList<>();
         if (this.root != null) {
             this.root.preOrder(list);
@@ -114,30 +108,31 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
             throw new EmptyTree();
         }
 
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) == this.root.getData()) {
-                System.out.print(list.get(i) + " [R] ");
-            } else {
-                System.out.print(list.get(i)+ " ");
-            }
-        }
-        System.out.println(" ");
+        return list;
     }
-    public void postOrder() throws EmptyTree{
+
+    public LinkedList<T> postOrder() throws EmptyTree{
         LinkedList<T> list = new LinkedList<>();
         if (this.root != null) {
             this.root.postOrder(list);
         } else {
             throw new EmptyTree();
         }
+        return list;
+    }
 
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) == this.root.getData()) {
-                System.out.println(list.get(i) + " [R] ");
+    public void printList (LinkedList<T> list){
+        for (int i = 0; i < list.getSize(); i++) {
+            if (list.getValueNode(i) == this.root.getData()) {
+                System.out.println(list.getValueNode(i) + " [R] ");
             } else {
-                System.out.print(list.get(i)+ " ");
+                System.out.print(list.getValueNode(i)+ " ");
             }
         }
         System.out.println(" ");
     }
+
+
+
+
 }
