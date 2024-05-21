@@ -1,6 +1,7 @@
 package linkedList;
 
 public class ListNode<T> {
+
     private T value;
     private ListNode<T> next;
 

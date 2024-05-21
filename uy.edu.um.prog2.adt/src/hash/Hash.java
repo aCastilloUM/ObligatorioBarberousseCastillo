@@ -28,7 +28,6 @@ public class Hash<K,V> implements MyHash<K,V> {
         return sum % capacity;
     }
 
-
     private int nextPrimeAfter(int n) {
         n = (n % 2 == 0) ? n + 1 : n + 2; // Asegura que el número sea impar
         while (!isPrime(n)) {
@@ -54,6 +53,7 @@ public class Hash<K,V> implements MyHash<K,V> {
         }
         return true;
     }
+
     public void resize(){
         int newCapacity = nextPrimeAfter(capacity*2);
         HashNode<K,V> [] newTable = new HashNode[newCapacity]; //Creo un nuevo Array con la nueva capacidad
@@ -79,8 +79,6 @@ public class Hash<K,V> implements MyHash<K,V> {
         table = newTable;
         capacity = newCapacity;
     }
-
-
 
     public void add (K key, V value){
         //Si la cantidad de elementos de la tabla es mayor al 75% de la capacidad, agrandamos el Hash
@@ -132,7 +130,7 @@ public class Hash<K,V> implements MyHash<K,V> {
     }
 
     @Override
-    public void remove(K key) throws InvalidKey{
+    public void remove(K key) throws InvalidKeyException {
         int index = hashFunction(key);
         int startIndex =index;
         boolean found = false;
@@ -151,7 +149,7 @@ public class Hash<K,V> implements MyHash<K,V> {
 
         // Si el nodo no fue encontrado, lanzar excepción
         if (!found) {
-            throw new InvalidKey();
+            throw new InvalidKeyException();
         }
 
         table[index] = null;
@@ -170,14 +168,14 @@ public class Hash<K,V> implements MyHash<K,V> {
     }
 
     @Override
-    public V get(K key) throws InvalidKey,EmptyHashException {
+    public V get(K key) throws InvalidKeyException,EmptyHashException {
         if (size == 0) {throw new EmptyHashException();}
 
         int index = hashFunction(key); //Buscamos el valor de la key en HashFunction
         int startIndex = index;
 
         if (table[index] == null) {
-            throw new InvalidKey();
+            throw new InvalidKeyException();
         } else {
             while (table[index] != null) {
                 if (table[index].getKey().equals(key)) { //Comparamos la key otorgada con la de la tabla
@@ -190,7 +188,6 @@ public class Hash<K,V> implements MyHash<K,V> {
             }
 
         }
-        throw new InvalidKey();
+        throw new InvalidKeyException();
     }
-
 }

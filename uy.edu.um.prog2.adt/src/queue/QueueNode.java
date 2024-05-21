@@ -1,6 +1,7 @@
 package queue;
 
 public class QueueNode<T> {
+
     private T value;
     private QueueNode<T> next;
     private QueueNode<T> previous;

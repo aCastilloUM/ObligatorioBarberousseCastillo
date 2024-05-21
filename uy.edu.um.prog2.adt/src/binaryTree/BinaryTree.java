@@ -16,28 +16,28 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
     }
 
     @Override
-    public T serch(K key) throws EmptyTree, InvalidKey {
+    public T search(K key) throws EmptyTreeException, InvalidKeyException {
         TreeNode<K,T> res;
         if (this.root != null) {
             res = this.root.findNode(key);
         } else {
-            throw new EmptyTree();
+            throw new EmptyTreeException();
         }
         return res.getData();
     }
 
-    public TreeNode<K, T> serchNode(K key) throws EmptyTree, InvalidKey {
+    public TreeNode<K, T> serchNode(K key) throws EmptyTreeException, InvalidKeyException {
         TreeNode<K,T> aux;
         if (this.root != null) {
             aux = this.root.findNode(key);
         } else {
-            throw new EmptyTree();
+            throw new EmptyTreeException();
         }
         return aux;
     }
 
     @Override
-    public void add(K key, T data) throws InvalidKey {
+    public void add(K key, T data) throws InvalidKeyException {
         TreeNode<K,T> add = new TreeNode<>(key, data);
         TreeNode<K,T> parent;
         if (this.root == null){
@@ -54,7 +54,7 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
 
     }
 
-    public void addNode(TreeNode<K, T> add) throws InvalidKey {
+    public void addNode(TreeNode<K, T> add) throws InvalidKeyException {
         if (this.root == null) {
             this.root = add;
         } else {
@@ -68,7 +68,7 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
     }
 
     @Override
-    public void delete(K key) throws InvalidKey, EmptyTree, EmptyListException {
+    public void delete(K key) throws InvalidKeyException, EmptyTreeException, EmptyListException {
         if (this.root != null) {
             TreeNode<K,T> del = this.serchNode(key);
             TreeNode<K,T> parent = this.root.getParent(key);
@@ -86,37 +86,37 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
                 this.addNode(list.getValueNode(i));
             }
         } else {
-            throw new EmptyTree();
+            throw new EmptyTreeException();
         }
     }
 
-    public LinkedList<T> inOrder() throws EmptyTree{
+    public LinkedList<T> inOrder() throws EmptyTreeException {
         LinkedList<T> list = new LinkedList<>();
         if (this.root != null) {
             this.root.inOrder(list);
         } else {
-            throw new EmptyTree();
+            throw new EmptyTreeException();
         }
         return list;
     }
 
-    public LinkedList<T> preOrder() throws EmptyTree{
+    public LinkedList<T> preOrder() throws EmptyTreeException {
         LinkedList<T> list = new LinkedList<>();
         if (this.root != null) {
             this.root.preOrder(list);
         } else {
-            throw new EmptyTree();
+            throw new EmptyTreeException();
         }
 
         return list;
     }
 
-    public LinkedList<T> postOrder() throws EmptyTree{
+    public LinkedList<T> postOrder() throws EmptyTreeException {
         LinkedList<T> list = new LinkedList<>();
         if (this.root != null) {
             this.root.postOrder(list);
         } else {
-            throw new EmptyTree();
+            throw new EmptyTreeException();
         }
         return list;
     }
@@ -131,8 +131,4 @@ public class BinaryTree<K,T> implements MyBinaryTree<K,T>{
         }
         System.out.println(" ");
     }
-
-
-
-
 }

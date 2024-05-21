@@ -1,6 +1,7 @@
 package stack;
 
 public class StackNode<T> {
+
     private T value;
     private StackNode<T> prev;
 
@@ -8,6 +9,7 @@ public class StackNode<T> {
         this.value=value;
         this.prev=null;
     }
+
     public void setValue(T value) {
         this.value = value;
     }
@@ -16,7 +18,6 @@ public class StackNode<T> {
         this.prev = prev;
     }
 
-
     public T getValue() {
         return value;
     }
@@ -24,5 +25,4 @@ public class StackNode<T> {
     public StackNode<T> getPrev() {
         return prev;
     }
-
 }

@@ -5,16 +5,16 @@ import linkedList.LinkedList;
 
 public interface MyBinaryTree<K,T> {
 
-    public T serch(K key) throws EmptyTree, InvalidKey;
+    public T search(K key) throws EmptyTreeException, InvalidKeyException;
 
-    public void add(K key, T data) throws InvalidKey;
+    public void add(K key, T data) throws InvalidKeyException;
 
-    public void delete(K key) throws InvalidKey, EmptyTree, EmptyListException;
+    public void delete(K key) throws InvalidKeyException, EmptyTreeException, EmptyListException;
 
-    LinkedList<T> preOrder() throws EmptyTree;
+    LinkedList<T> preOrder() throws EmptyTreeException;
 
-    LinkedList<T> inOrder() throws EmptyTree;
+    LinkedList<T> inOrder() throws EmptyTreeException;
 
-    LinkedList<T> postOrder() throws EmptyTree;
+    LinkedList<T> postOrder() throws EmptyTreeException;
 
 }

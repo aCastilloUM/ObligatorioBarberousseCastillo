@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Stack <T> implements MyStack<T>{
 
     private StackNode<T> top = null;
-
     int size = 0;
 
     public Stack() {
@@ -100,5 +99,4 @@ public class Stack <T> implements MyStack<T>{
         }
         return exist;
     }
-
 }

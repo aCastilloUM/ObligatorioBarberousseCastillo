@@ -7,13 +7,11 @@ import linkedList.LinkedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
 public class BinaryTreeTest {
     BinaryTree<Integer, String> tree;
 
     @BeforeEach
-    public void initTree() throws InvalidKey {
+    public void initTree() throws InvalidKeyException {
         tree = new BinaryTree<>();
         tree.add(10, "A");
         tree.add(5, "B");
@@ -25,16 +23,16 @@ public class BinaryTreeTest {
     }
 
     @Test
-    public void searchTest() throws EmptyTree, InvalidKey {
-        assertEquals("C", tree.serch(15));
-        assertEquals("D", tree.serch(3));
-        assertThrows(InvalidKey.class, () -> {
-            tree.serch(100);
+    public void searchTest() throws EmptyTreeException, InvalidKeyException {
+        assertEquals("C", tree.search(15));
+        assertEquals("D", tree.search(3));
+        assertThrows(InvalidKeyException.class, () -> {
+            tree.search(100);
         });
     }
 
     @Test
-    public void addTest() throws InvalidKey {
+    public void addTest() throws InvalidKeyException {
         BinaryTree<Integer, String> emptyTree = new BinaryTree<>();
         emptyTree.add(10, "X");
         assertEquals("X", emptyTree.getRoot().getData());
@@ -50,25 +48,36 @@ public class BinaryTreeTest {
     }
 
     @Test
-    public void deleteTest() throws InvalidKey, EmptyTree, EmptyListException {
+    public void deleteTest() throws InvalidKeyException, EmptyTreeException, EmptyListException {
         tree.delete(15);
-        assertThrows(InvalidKey.class, () -> {
-            tree.serch(15);
+        assertThrows(InvalidKeyException.class, () -> {
+            tree.search(15);
         });
 
         BinaryTree<Integer, String> emptyTree = new BinaryTree<>();
-        assertThrows(EmptyTree.class, () -> {
+        assertThrows(EmptyTreeException.class, () -> {
             emptyTree.delete(10);
         });
     }
 
-    /*
     @Test
-    public void inOrderTest() throws EmptyTree {
-        LinkedList<Integer> expected = new LinkedList<>(Arrays.asList(3, 5, 7, 10, 12, 15, 20));
-        assertEquals(expected, tree.inOrder());
-    }
+    public void inOrderTest() throws EmptyTreeException {
+        LinkedList<String> expected = new LinkedList<>();
 
-      */
+        //Agrego la data de los nodos del binary tree en el orden en que deberian aparecer segun el inOrder
+        expected.addLast("D");
+        expected.addLast("B");
+        expected.addLast("E");
+        expected.addLast("A");
+        expected.addLast("F");
+        expected.addLast("C");
+        expected.addLast("G");
+
+        LinkedList<String> actual = tree.inOrder();
+
+        for (int i = 0; i < actual.getSize(); i++){
+            assertEquals(expected.getValueNode(i),actual.getValueNode(i));
+        }
+    }
 
 }

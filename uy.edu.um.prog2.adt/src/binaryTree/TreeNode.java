@@ -3,6 +3,7 @@ package binaryTree;
 import linkedList.LinkedList;
 
 public class TreeNode<K,T> implements Comparable<K>{
+
     private T data;
     private K key;
     private TreeNode<K,T> leftChild;
@@ -45,7 +46,7 @@ public class TreeNode<K,T> implements Comparable<K>{
         this.rightChild = right;
     }
 
-    public TreeNode<K, T> findNode(K key) throws InvalidKey{
+    public TreeNode<K, T> findNode(K key) throws InvalidKeyException {
         TreeNode<K,T> aux = null;
         if (this.key == key) {
             aux = this;
@@ -61,11 +62,12 @@ public class TreeNode<K,T> implements Comparable<K>{
             }
         }
         if (aux == null) {
-            throw new InvalidKey();
+            throw new InvalidKeyException();
         }
         return aux;
     }
-    public TreeNode<K, T> findFreeParent(K key) throws InvalidKey{
+
+    public TreeNode<K, T> findFreeParent(K key) throws InvalidKeyException {
         //Este metodo nos devuelve un padre libre para insertar
         TreeNode<K,T> parent = null;
         if (this.compareTo(key) > 0) { //Busca en que parte del arbol tiene que estar el padre con respecto a la raiz
@@ -81,11 +83,12 @@ public class TreeNode<K,T> implements Comparable<K>{
                 parent = this.rightChild.findFreeParent(key);
             }
         } else {
-            throw new InvalidKey();
+            throw new InvalidKeyException();
         }
 
         return parent;
     }
+
     public void getChildList(LinkedList<TreeNode<K,T>> list) {
         list.addLast(this);
         if (this.leftChild != null) {
@@ -96,7 +99,7 @@ public class TreeNode<K,T> implements Comparable<K>{
         }
     }
 
-    public TreeNode<K,T> getParent(K key) throws InvalidKey{
+    public TreeNode<K,T> getParent(K key) throws InvalidKeyException {
         TreeNode<K,T> parent = null;
         if (this.leftChild != null && this.leftChild.key == key) {
             parent = this;
@@ -117,10 +120,11 @@ public class TreeNode<K,T> implements Comparable<K>{
             }
         }
         if (parent == null) {
-            throw new InvalidKey();
+            throw new InvalidKeyException();
         }
         return parent;
     }
+
     public void inOrder(LinkedList<T> list) {
         if (this.leftChild != null) {
             this.leftChild.inOrder(list);
@@ -150,5 +154,4 @@ public class TreeNode<K,T> implements Comparable<K>{
         }
         list.addLast(this.data);
     }
-
 }
