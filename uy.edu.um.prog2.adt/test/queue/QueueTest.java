@@ -1,6 +1,6 @@
 package queue;
 
-import linkedList.EmptyListException;
+import exceptions.EmptyQueueException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

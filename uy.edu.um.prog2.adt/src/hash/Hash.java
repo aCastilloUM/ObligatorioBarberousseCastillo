@@ -1,5 +1,8 @@
 package hash;
 
+import exceptions.EmptyHashException;
+import exceptions.InvalidKeyException;
+
 public class Hash<K,V> implements MyHash<K,V> {
 
     private int size;
@@ -54,7 +57,7 @@ public class Hash<K,V> implements MyHash<K,V> {
         return true;
     }
 
-    public void resize(){
+    public void reHash(){
         int newCapacity = nextPrimeAfter(capacity*2);
         HashNode<K,V> [] newTable = new HashNode[newCapacity]; //Creo un nuevo Array con la nueva capacidad
 
@@ -82,7 +85,7 @@ public class Hash<K,V> implements MyHash<K,V> {
 
     public void add (K key, V value){
         //Si la cantidad de elementos de la tabla es mayor al 75% de la capacidad, agrandamos el Hash
-        if (size >= capacity * 0.75) { resize(); }
+        if (size >= capacity * 0.75) { reHash(); }
         int index = hashFunction(key);
 
         //Buscamos un lugar optimo
@@ -105,7 +108,7 @@ public class Hash<K,V> implements MyHash<K,V> {
                 size++;
             } else {
                 //Si no encontramos lugar, reajustamos el tamanio;
-                resize();
+                reHash();
                 add(key, value);
             }
         }
@@ -168,7 +171,7 @@ public class Hash<K,V> implements MyHash<K,V> {
     }
 
     @Override
-    public V get(K key) throws InvalidKeyException,EmptyHashException {
+    public V get(K key) throws InvalidKeyException, EmptyHashException {
         if (size == 0) {throw new EmptyHashException();}
 
         int index = hashFunction(key); //Buscamos el valor de la key en HashFunction

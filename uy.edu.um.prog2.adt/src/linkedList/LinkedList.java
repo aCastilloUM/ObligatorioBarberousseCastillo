@@ -1,5 +1,7 @@
 package linkedList;
 
+import exceptions.EmptyListException;
+
 public class LinkedList<T> implements MyList<T> {
 
     ListNode<T> head;

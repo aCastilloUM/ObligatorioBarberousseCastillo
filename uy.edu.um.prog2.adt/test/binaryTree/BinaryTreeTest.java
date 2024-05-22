@@ -2,7 +2,7 @@ package binaryTree;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import linkedList.EmptyListException;
+import exceptions.EmptyListException;
 import linkedList.LinkedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

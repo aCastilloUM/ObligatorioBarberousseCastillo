@@ -1,4 +1,4 @@
-package stack;
+package exceptions;
 
 public class EmptyStackException extends Exception{
 }

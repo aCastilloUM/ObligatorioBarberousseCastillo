@@ -1,6 +1,9 @@
 package hash;
 
 
+import exceptions.EmptyHashException;
+import exceptions.InvalidKeyException;
+
 public interface MyHash<K,V> {
 
     public void add(K key, V value);
@@ -11,6 +14,6 @@ public interface MyHash<K,V> {
 
     public V get(K key) throws InvalidKeyException, EmptyHashException;
 
-    public void resize();
+    public void reHash();
 
 }

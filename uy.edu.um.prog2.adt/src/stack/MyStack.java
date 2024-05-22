@@ -1,5 +1,7 @@
 package stack;
 
+import exceptions.EmptyStackException;
+
 public interface MyStack <T>{
 
     void push(T value);

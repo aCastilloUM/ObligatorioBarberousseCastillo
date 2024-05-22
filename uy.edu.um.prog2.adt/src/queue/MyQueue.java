@@ -1,5 +1,7 @@
 package queue;
 
+import exceptions.EmptyQueueException;
+
 public interface MyQueue<T> {
 
     boolean isEmpty();

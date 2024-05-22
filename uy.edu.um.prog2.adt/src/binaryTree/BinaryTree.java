@@ -1,6 +1,6 @@
 package binaryTree;
 
-import linkedList.EmptyListException;
+import exceptions.EmptyListException;
 import linkedList.LinkedList;
 
 public class BinaryTree<K,T> implements MyBinaryTree<K,T>{

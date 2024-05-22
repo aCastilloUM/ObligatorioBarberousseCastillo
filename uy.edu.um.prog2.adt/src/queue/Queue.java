@@ -1,5 +1,7 @@
 package queue;
 
+import exceptions.EmptyQueueException;
+
 public class Queue<T> implements MyQueue<T> {
 
     QueueNode<T> first;

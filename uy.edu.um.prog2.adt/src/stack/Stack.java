@@ -1,5 +1,7 @@
 package stack;
 
+import exceptions.EmptyStackException;
+
 import java.util.ArrayList;
 
 public class Stack <T> implements MyStack<T>{

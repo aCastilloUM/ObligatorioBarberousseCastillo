@@ -1,5 +1,7 @@
 package linkedList;
 
+import exceptions.EmptyListException;
+
 public interface MyList<T> {
 
     boolean isEmpty();
