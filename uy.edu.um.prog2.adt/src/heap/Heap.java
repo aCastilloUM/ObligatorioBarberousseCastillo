@@ -121,5 +121,15 @@ public class Heap<K,T> implements MyHeap<K,T>{
         }
     }
 
+    public boolean contains (K key){
+        boolean exist = false;
+        for (int i =0 ; i < this.table.size(); i++){
+            if (table.get(i).getKey() == key){
+                exist = true;
+                return exist;
+            }
+        }
+        return exist;
+    }
 }
 
