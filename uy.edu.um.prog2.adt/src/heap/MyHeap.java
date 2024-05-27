@@ -10,4 +10,6 @@ public interface MyHeap <K,T>{
 
     void delete(K key) throws exceptions.InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException;
 
+    boolean contains(K key);
+
 }
