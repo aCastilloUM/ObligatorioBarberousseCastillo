@@ -1,6 +1,6 @@
 import java.time.LocalDate;
 
-public class Song {
+public class  Song {
     String spotify_id;
     String name;
     String artists;
