@@ -1,4 +1,6 @@
 import binaryTree.BinaryTree;
+import binaryTree.InvalidKeyException;
+import exceptions.EmptyHashException;
 import hash.Hash;
 
 import javax.swing.*;
@@ -12,6 +14,7 @@ public class readerCSV {
     public BufferedReader reader;
     public String line;
     public String parts[];
+    public String eachPart[];
 
     public void readFile(String file_name) {
         Hash<String, BinaryTree> world = new Hash<>(5);
@@ -24,43 +27,73 @@ public class readerCSV {
                 System.out.println();
                 counter++;
 
-                if (counter >=1) {
-                    int daily_rank = Integer.parseInt(parts[3]);
-                    int daily_movement = Integer.parseInt(parts[4]);
-                    int weekly_movement = Integer.parseInt(parts[5]);
+                eachPart = parts[0].split(";");
+                //El counter 1 ssaltea la primera linea, y eachPart.length>4 se asegura que haya info
+                if (counter > 1 && eachPart.length>4) {
 
-                    LocalDate snapshot_date = toLocalDate(parts[7]);
+                        int daily_rank = Integer.parseInt(eachPart[3]);
+                        int daily_movement = Integer.parseInt(eachPart[4]);
+                        int weekly_movement = Integer.parseInt(eachPart[5]);
+                        LocalDate snapshot_date = toLocalDate(eachPart[7]);
+                        int duration_ms = Integer.parseInt(eachPart[10]);
 
-                    int duration_ms = Integer.parseInt(parts[10]);
-
-                    LocalDate album_release = toLocalDate(parts[12]);
-
-                    Double tempo = Double.valueOf(parts[23]);
-
-
-                    Song song = new Song(parts[0], parts[1], parts[2], daily_rank, daily_movement, weekly_movement, parts[6], snapshot_date, duration_ms, parts[11], album_release, tempo);
-                    String CountryCode = parts[6]; //Codigo del pais
-
-                    //Chequeemos si el pais ya esta registrado
-                    if (parts[6] == null) {
-
-                        //Si el arbol global no esta creado, crearlo y meterlo en el hash
-                        if (!world.contains("0")) {
-                            BinaryTree<LocalDate, Song> global = new BinaryTree<>();
+                        //Chequeamos que la cancion pertenezca a un album
+                        LocalDate album_realease = null;
+                        if (!eachPart[12].isEmpty()) {
+                            album_realease = toLocalDate(eachPart[12]);
                         }
+
+
+                        Double tempo = Double.valueOf(eachPart[23]);
+
+
+                        Song song = new Song(eachPart[0], eachPart[1], eachPart[2], daily_rank, daily_movement, weekly_movement, eachPart[6], snapshot_date, duration_ms, eachPart[11], album_realease, tempo);
+                        String CountryCode = eachPart[6]; //Codigo del pais
+
+//                      Chequeemos si el pais ya esta registrado
+                        //Arbol global
+
+                        if (!CountryCode.isEmpty()) {
+                            //Si el arbol no esta creado, crear el arbol, meterlo en el hash, y agregar una cancion
+                            if (!world.contains(CountryCode)){
+                                BinaryTree<LocalDate, Song> global = new BinaryTree<>();
+                                world.add(song.getCountry(), global);
+                                global.add(song.getSnapshot_date(), song);
+                                System.out.println(world.get(song.getCountry()).getRoot().getData());
+                            }
+                        }
+                       //Si el arbol global no esta creado, crearlo y meterlo en el hash
+                       if (!world.contains("0")) {
+                          BinaryTree<LocalDate, Song> global = new BinaryTree<>();
+//                        }
+//                    }
+                    }
+
+                       //Problema: Deberia poder acceder a los metodos de cancion cuando uso el getData
+                    if (counter == 748804){
+                        System.out.println(world.get(song.getCountry()).getRoot().getData());
                     }
                 }
-            }
+                  }
+
+
             reader.close();
             line = null;
             parts = null;
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
+        } catch (EmptyHashException e) {
+            throw new RuntimeException(e);
+        } catch (exceptions.InvalidKeyException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     public LocalDate toLocalDate(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
         LocalDate newDate = LocalDate.parse(date,formatter);
         return newDate;
     }
