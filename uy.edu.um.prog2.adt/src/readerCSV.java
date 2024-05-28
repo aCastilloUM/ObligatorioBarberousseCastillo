@@ -22,9 +22,8 @@ public class readerCSV {
                 parts = line.split(" ; " );
                 printLine();
                 System.out.println();
-
                 counter++;
-                //Primero crearemos la cancion
+
                 if (counter >=1) {
                     int daily_rank = Integer.parseInt(parts[3]);
                     int daily_movement = Integer.parseInt(parts[4]);
@@ -58,7 +57,6 @@ public class readerCSV {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
         }
-
     }
 
     public LocalDate toLocalDate(String date){
@@ -66,6 +64,7 @@ public class readerCSV {
         LocalDate newDate = LocalDate.parse(date,formatter);
         return newDate;
     }
+
     public void printLine(){
         for (int i = 0; i < parts.length; i++){
             System.out.println(parts[i] + "    |   ");
