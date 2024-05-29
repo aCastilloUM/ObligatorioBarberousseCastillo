@@ -24,6 +24,11 @@ public class readerCSV {
             reader = new BufferedReader(new FileReader(file_name));
             int counter = 0;
             int counter2 = 0;
+            int counter3 = 0;
+            int counter4 = 0;
+            int hashSize = 0;
+            int hashCapacity = 0;
+            int cantidadHeap = 0;
             while ((line = reader.readLine()) != null) {
                 parts = line.split(" ; ");
                 //printLine();
@@ -31,8 +36,11 @@ public class readerCSV {
                 counter++;
 
                 eachPart = parts[0].split(";");
-                //El counter 1 ssaltea la primera linea, y eachPart.length>4 se asegura que haya info
+                //El counter 1 saltea la primera linea, y eachPart.length>4 se asegura que haya info
                 if (counter > 1 && eachPart.length > 4) {
+
+                    //Es esta linea de arriba, nuestro eachPart es una lista que tiene en cada
+                    // posicion cada elemento de la cancion digamo
 
                     int daily_rank = Integer.parseInt(eachPart[3]);
                     int daily_movement = Integer.parseInt(eachPart[4]);
@@ -54,17 +62,60 @@ public class readerCSV {
                     //Chequeemos si el pais ya esta registrado
 
                     if (hashKey.length() == 9) {
+                        //Solo globales
                         counter2++;
+                        //Estoy creando un objeto en el hash por cada top global por fecha
+
+                        Heap<Integer, Song> global = null;
+
                         if (!world.contains(hashKey)) {
-                            Heap<Integer, Song> global = new Heap<>();
+                            //La fecha no fue registrada
+                            global = new Heap<>();
                             world.add(hashKey, global);
                             global.add(song.getDaily_rank(), song);
-                            System.out.println(world.get(hashKey).get());
+                            counter3++;
+
+                        }
+
+                        else {
+
+                            world.get(hashKey).add(song.getDaily_rank(),song);
+                            counter4++;
+                            hashCapacity = world.getCapacity();
+                            hashSize = world.getSize();
+                            cantidadHeap = world.get(hashKey).getTable().size();
+
+
                         }
                     }
+                    else {
+                        Heap<Integer, Song> countryDate = null;
+
+                        if (!world.contains(hashKey)){
+                            countryDate = new Heap<>();
+                            world.add(hashKey, countryDate);
+                            countryDate.add(song.getDaily_rank(), song);
+                        }
+                        else{
+                            world.get(hashKey).add(song.getDaily_rank(),song);
+
+
+                        }
+
+                    }
+                    hashCapacity = world.getCapacity();
+                    hashSize = world.getSize();
+                    cantidadHeap = world.get(hashKey).getTable().size();
                 }
+
             }
             System.out.println(counter2);
+            System.out.println(counter3);
+            System.out.println(counter4);
+            System.out.println(counter3 + counter4);
+            System.out.println(" hash capacity " + hashCapacity);
+            System.out.println(" hash size " + hashSize);
+            System.out.println(cantidadHeap);
             reader.close();
             line = null;
             parts = null;
@@ -73,8 +124,6 @@ public class readerCSV {
         } catch (EmptyHashException e) {
             throw new RuntimeException(e);
         } catch (exceptions.InvalidKeyException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidKeyException.EmptyHeapException e) {
             throw new RuntimeException(e);
         }
     }
