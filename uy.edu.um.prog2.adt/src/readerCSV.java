@@ -1,11 +1,8 @@
-import binaryTree.BinaryTree;
-import exceptions.EmptyHashException;
-import exceptions.InvalidKeyException;
+import exceptions.*;
 import hash.Hash;
-import heap.Heap;
+import linkedList.LinkedList;
 
 import javax.swing.*;
-import javax.swing.plaf.IconUIResource;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,112 +15,88 @@ public class readerCSV {
     public String parts[];
     public String eachPart[];
 
-    public void readFile(String file_name) {
-        Hash<String, Heap> world = new Hash<>(5);
+    public void readFile(String file_name) throws EmptyHashException, InvalidKeyException {
+        Hash<String, LinkedList<Song>> world = new Hash<>(5);
         try {
             reader = new BufferedReader(new FileReader(file_name));
             int counter = 0;
-            int counter2 = 0;
-            int counter3 = 0;
-            int counter4 = 0;
-            int hashSize = 0;
-            int hashCapacity = 0;
-            int cantidadHeap = 0;
             while ((line = reader.readLine()) != null) {
+                line = line.replaceAll("\"", "");
                 parts = line.split(" ; ");
                 //printLine();
                 //System.out.println();
                 counter++;
-
                 eachPart = parts[0].split(";");
+
                 //El counter 1 saltea la primera linea, y eachPart.length>4 se asegura que haya info
                 if (counter > 1 && eachPart.length > 4) {
-
+                    //System.out.println(eachPart[6] + eachPart[7]);
                     //Es esta linea de arriba, nuestro eachPart es una lista que tiene en cada
-                    // posicion cada elemento de la cancion digamo
+                    // posicion cada elemento de la cancion
 
                     int daily_rank = Integer.parseInt(eachPart[3]);
                     int daily_movement = Integer.parseInt(eachPart[4]);
                     int weekly_movement = Integer.parseInt(eachPart[5]);
-                    LocalDate snapshot_date = toLocalDate(eachPart[7]);
+                    //LocalDate snapshot_date = toLocalDate(eachPart[7]);
                     int duration_ms = Integer.parseInt(eachPart[10]);
 
                     //Chequeamos que la cancion pertenezca a un album
-                    LocalDate album_realease = null;
+                    /*LocalDate album_realease = null;
                     if (!eachPart[12].isEmpty()) {
                         album_realease = toLocalDate(eachPart[12]);
                     }
+                     */
 
                     Double tempo = Double.valueOf(eachPart[23]);
 
                     String hashKey = eachPart[6] + eachPart[7]; //Codigo del pais
-                    Song song = new Song(hashKey, eachPart[0], eachPart[1], eachPart[2], daily_rank, daily_movement, weekly_movement, eachPart[6], snapshot_date, duration_ms, eachPart[11], album_realease, tempo);
+                    Song song = new Song(hashKey, eachPart[0], eachPart[1], eachPart[2], daily_rank, daily_movement, weekly_movement, eachPart[6], (String)eachPart[7], duration_ms, eachPart[11], eachPart[12], tempo);
 
                     //Chequeemos si el pais ya esta registrado
-
                     if (hashKey.length() == 9) {
-                        //Solo globales
-                        counter2++;
-                        //Estoy creando un objeto en el hash por cada top global por fecha
+                        //Solo globales - estoy creando un objeto en el hash por cada top global por fecha
 
-                        Heap<Integer, Song> global = null;
+                        LinkedList<Song> global = null;
 
                         if (!world.contains(hashKey)) {
                             //La fecha no fue registrada
-                            global = new Heap<>();
+                            global = new LinkedList<>();
                             world.add(hashKey, global);
-                            global.add(song.getDaily_rank(), song);
-                            counter3++;
-
+                            global.addLast(song);
                         }
-
                         else {
-
-                            world.get(hashKey).add(song.getDaily_rank(),song);
-                            counter4++;
-                            hashCapacity = world.getCapacity();
-                            hashSize = world.getSize();
-                            cantidadHeap = world.get(hashKey).getTable().size();
-
-
+                            world.get(hashKey).addLast(song);
                         }
                     }
-                    else {
-                        Heap<Integer, Song> countryDate = null;
+                    else if (hashKey.length() > 9){
+                        LinkedList<Song> countryDate = null;
 
                         if (!world.contains(hashKey)){
-                            countryDate = new Heap<>();
+                            countryDate = new LinkedList<>();
                             world.add(hashKey, countryDate);
-                            countryDate.add(song.getDaily_rank(), song);
+                            countryDate.addLast(song);
                         }
                         else{
-                            world.get(hashKey).add(song.getDaily_rank(),song);
-
+                            world.get(hashKey).addLast(song);
 
                         }
-
                     }
-                    hashCapacity = world.getCapacity();
-                    hashSize = world.getSize();
-                    cantidadHeap = world.get(hashKey).getTable().size();
                 }
-
             }
-            System.out.println(counter2);
-            System.out.println(counter3);
-            System.out.println(counter4);
-            System.out.println(counter3 + counter4);
-            System.out.println(" hash capacity " + hashCapacity);
-            System.out.println(" hash size " + hashSize);
-            System.out.println(cantidadHeap);
             reader.close();
             line = null;
             parts = null;
+            if (world.getSize()>100) {
+                System.out.println("El metodo esta agregando");;
+                //System.out.println(world.get("13/5/2024"));
+                System.out.println(world.contains("PA27/4/2024"));
+                world.get("PA27/4/2024");
+            } else {
+                System.out.println("El Hash esta vacio");
+            }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
-        } catch (EmptyHashException e) {
-            throw new RuntimeException(e);
-        } catch (exceptions.InvalidKeyException e) {
+        } catch (EmptyHashException | InvalidKeyException e) {
             throw new RuntimeException(e);
         }
     }
@@ -140,3 +113,5 @@ public class readerCSV {
         }
     }
 }
+
+

@@ -9,13 +9,13 @@ public class  Song {
     int daily_movement;
     int weekly_movement;
     String country;
-    LocalDate snapshot_date;
+    String snapshot_date;
     int duration_ms;
     String album_name;
-    LocalDate album_release;
+    String album_release;
     double tempo;
 
-    public Song(String hashKeySong, String spotify_id, String name, String artists, int daily_rank, int daily_movement, int weekly_movement, String country, LocalDate snapshot_date, int duration_ms, String album_name, LocalDate album_release, double tempo) {
+    public Song( String hashKeySong, String spotify_id, String name, String artists, int daily_rank, int daily_movement, int weekly_movement,String country, String snapshot_date,int duration_ms, String album_name, String album_release, double tempo) {
         this.hashKeySong = hashKeySong;
         this.spotify_id = spotify_id;
         this.name = name;
@@ -87,11 +87,11 @@ public class  Song {
         this.country = country;
     }
 
-    public LocalDate getSnapshot_date() {
+    public String getSnapshot_date() {
         return snapshot_date;
     }
 
-    public void setSnapshot_date(LocalDate snapshot_date) {
+    public void setSnapshot_date(String snapshot_date) {
         this.snapshot_date = snapshot_date;
     }
 
@@ -111,11 +111,11 @@ public class  Song {
         this.album_name = album_name;
     }
 
-    public LocalDate getAlbum_release() {
+    public String getAlbum_release() {
         return album_release;
     }
 
-    public void setAlbum_release(LocalDate album_release) {
+    public void setAlbum_release(String album_release) {
         this.album_release = album_release;
     }
 
@@ -126,6 +126,5 @@ public class  Song {
     public void setTempo(double tempo) {
         this.tempo = tempo;
     }
-
 
 }
