@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 
 public class  Song {
+    String hashKeySong;
     String spotify_id;
     String name;
     String artists;
@@ -14,7 +15,8 @@ public class  Song {
     LocalDate album_release;
     double tempo;
 
-    public Song(String spotify_id, String name, String artists, int daily_rank, int daily_movement, int weekly_movement, String country, LocalDate snapshot_date, int duration_ms, String album_name, LocalDate album_release, double tempo) {
+    public Song(String hashKeySong, String spotify_id, String name, String artists, int daily_rank, int daily_movement, int weekly_movement, String country, LocalDate snapshot_date, int duration_ms, String album_name, LocalDate album_release, double tempo) {
+        this.hashKeySong = hashKeySong;
         this.spotify_id = spotify_id;
         this.name = name;
         this.artists = artists;
