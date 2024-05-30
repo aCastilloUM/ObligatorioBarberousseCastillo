@@ -8,6 +8,10 @@ public class Hash<K,V> implements MyHash<K,V> {
     private int size;
     private int capacity;
     private HashNode<K, V> [] table;
+    public String lastHash;
+
+    public String remplazo = "no";
+
 
     public Hash(int capacity) {
         this.size = 0;
@@ -15,6 +19,8 @@ public class Hash<K,V> implements MyHash<K,V> {
         this.table = (HashNode<K, V> []) new HashNode[capacity];
     }
 
+    public String getLastHash() {return lastHash;}
+    public String getRemplazo() {return remplazo;}
     public int getSize() {return size;}
     public int getCapacity() {
         return capacity;
@@ -83,42 +89,37 @@ public class Hash<K,V> implements MyHash<K,V> {
         capacity = newCapacity;
     }
 
-    public void add (K key, V value){
-        //Si la cantidad de elementos de la tabla es mayor al 75% de la capacidad, agrandamos el Hash
-        if (size >= capacity * 0.75) { reHash(); }
-        int index = hashFunction(key);
-
-        //Buscamos un lugar optimo
-        //Si el lugar ya esta ocupado por un objeto con la misma clave, remplazamos el objeto
-        if (table[index] != null && table[index].getKey().equals(key)){
-            table[index] = new HashNode<>(key, value);
+    public void add(K key, V value) {
+        // Si la cantidad de elementos de la tabla es mayor al 75% de la capacidad, agrandamos el Hash
+        if (size >= capacity * 0.75) {
+            reHash();
         }
-        if (table[index] ==null){
+        key = (K) key.toString().trim(); // Recorta la clave aquí
+        int index = hashFunction(key);
+        if (size == 0) {
+            lastHash = (String) key;
+        }
+        // Busca un lugar óptimo
+        // Si el lugar ya está ocupado por un objeto con la misma clave, reemplaza el objeto
+        while (table[index] != null && !table[index].getKey().equals(key)) {
+            index = (index + 1) % capacity;
+
+        }
+
+        if (table[index] == null) {
             table[index] = new HashNode<>(key, value);
             size++;
-        }
-        else {
-            int startIndex = index;
-            do {
-                index = (index + 1) % capacity;
-            } while (table[index] != null && index != startIndex); //Iteramos hasta encontrar un lugar vacio, si llegamos al final, volvemos al principio
-            //Si encontramos un lugar, agregamos el objeto
-            if (table[index] == null) {
-                table[index] = new HashNode<>(key, value);
-                size++;
-            } else {
-                //Si no encontramos lugar, reajustamos el tamanio;
-                reHash();
-                add(key, value);
-            }
+        } else {
+            table[index].setValue(value); // Actualiza el valor si la clave ya existe
+            remplazo = "si";
         }
     }
 
     @Override
     public boolean contains(K key) {
+        key = (K) key.toString().trim();
         int index = hashFunction(key);
-        int startIndex =index;
-        boolean found = false;
+        int startIndex = index;
 
         while (table[index] != null) {
             if (table[index].getKey().equals(key)) {

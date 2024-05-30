@@ -20,8 +20,9 @@ public class readerCSV {
         try {
             reader = new BufferedReader(new FileReader(file_name));
             int counter = 0;
+            String hashKey = null;
             while ((line = reader.readLine()) != null) {
-                line = line.replaceAll("\"", "");
+                line = line.replaceAll("\"", "").trim();
                 parts = line.split(" ; ");
                 //printLine();
                 //System.out.println();
@@ -30,9 +31,6 @@ public class readerCSV {
 
                 //El counter 1 saltea la primera linea, y eachPart.length>4 se asegura que haya info
                 if (counter > 1 && eachPart.length > 4) {
-                    //System.out.println(eachPart[6] + eachPart[7]);
-                    //Es esta linea de arriba, nuestro eachPart es una lista que tiene en cada
-                    // posicion cada elemento de la cancion
 
                     int daily_rank = Integer.parseInt(eachPart[3]);
                     int daily_movement = Integer.parseInt(eachPart[4]);
@@ -40,57 +38,52 @@ public class readerCSV {
                     //LocalDate snapshot_date = toLocalDate(eachPart[7]);
                     int duration_ms = Integer.parseInt(eachPart[10]);
 
-                    //Chequeamos que la cancion pertenezca a un album
-                    /*LocalDate album_realease = null;
-                    if (!eachPart[12].isEmpty()) {
-                        album_realease = toLocalDate(eachPart[12]);
-                    }
-                     */
-
                     Double tempo = Double.valueOf(eachPart[23]);
 
-                    String hashKey = eachPart[6] + eachPart[7]; //Codigo del pais
-                    Song song = new Song(hashKey, eachPart[0], eachPart[1], eachPart[2], daily_rank, daily_movement, weekly_movement, eachPart[6], (String)eachPart[7], duration_ms, eachPart[11], eachPart[12], tempo);
+                    if (eachPart[6].isEmpty()){
+                        hashKey = eachPart[7];
+                    }
+                    else {
+                        hashKey = eachPart[6] + eachPart[7]; //Codigo del pais
+                    }
+                    Song song = new Song(hashKey, eachPart[0], eachPart[1], eachPart[2], daily_rank, daily_movement, weekly_movement, eachPart[6], (String) eachPart[7], duration_ms, eachPart[11], eachPart[12], tempo);
 
                     //Chequeemos si el pais ya esta registrado
-                    if (hashKey.length() == 9) {
-                        //Solo globales - estoy creando un objeto en el hash por cada top global por fecha
 
-                        LinkedList<Song> global = null;
+                        LinkedList<Song> countryDate = null;
 
                         if (!world.contains(hashKey)) {
                             //La fecha no fue registrada
-                            global = new LinkedList<>();
-                            world.add(hashKey, global);
-                            global.addLast(song);
-                        }
-                        else {
-                            world.get(hashKey).addLast(song);
-                        }
-                    }
-                    else if (hashKey.length() > 9){
-                        LinkedList<Song> countryDate = null;
-
-                        if (!world.contains(hashKey)){
                             countryDate = new LinkedList<>();
                             world.add(hashKey, countryDate);
                             countryDate.addLast(song);
                         }
-                        else{
+                        else {
                             world.get(hashKey).addLast(song);
-
                         }
+
+
                     }
                 }
-            }
+                //System.out.println(hashKey);
+
+
             reader.close();
             line = null;
             parts = null;
             if (world.getSize()>100) {
                 System.out.println("El metodo esta agregando");;
-                //System.out.println(world.get("13/5/2024"));
-                System.out.println(world.contains("PA27/4/2024"));
-                world.get("PA27/4/2024");
+                System.out.println(world.contains("2/12/2023"));
+                System.out.println(world.contains("AE18/10/2023"));
+                System.out.println(world.getSize());
+                System.out.println(world.getLastHash());
+                System.out.println(world.contains("UY18/10/2023"));
+                //Creo que el problema son las canciones con la fecha 13/5/2024
+                System.out.println(world.contains("13/5/2024"));
+                System.out.println(world.contains("PK13/5/2024"));
+                System.out.println(world.contains("13/5/2024"));
+                System.out.println(world.getRemplazo());
+
             } else {
                 System.out.println("El Hash esta vacio");
             }
