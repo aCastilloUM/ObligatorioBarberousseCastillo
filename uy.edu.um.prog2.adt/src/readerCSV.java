@@ -23,7 +23,7 @@ public class readerCSV {
             while ((line = reader.readLine()) != null) {
                 line = line.replaceAll("\"", "");
                 atributes = line.split(";");
-                System.out.println(atributes[11]);
+                //System.out.println(atributes[11]);
                 //System.out.println(atributes.length);
                 //printLine();
                 //System.out.println();
@@ -42,7 +42,7 @@ public class readerCSV {
                     } else {
                         hashKey = atributes[6] + atributes[7]; //Codigo del pais
                     }
-                    Song song = new Song(atributes[0], atributes[1], atributes[2], daily_rank, atributes[6], (String) atributes[7], tempo);
+                    Song song = new Song(atributes[0], atributes[1], atributes[2], daily_rank, atributes[6], atributes[7], tempo);
 
                     //Chequeemos si el pais ya esta registrado
                     if (world.contains(hashKey)) {
@@ -50,6 +50,15 @@ public class readerCSV {
                     } else {
                         this.createList(hashKey);
                         world.get(hashKey).addLast(song);
+                        System.out.println("Tamanos");
+                        System.out.println(world.getSize());
+                        System.out.println(world.get(hashKey).getSize());
+                        System.out.println("Id");
+                        System.out.println(world.get(hashKey).getValueNode(0));
+                        System.out.println("Artista");
+                        System.out.println(world.get(hashKey).getValueNode(2));
+                        System.out.println("Fecha");
+                        System.out.println(world.get(hashKey).getValueNode(7));
                     }
                 }
                 //System.out.println(hashKey);
