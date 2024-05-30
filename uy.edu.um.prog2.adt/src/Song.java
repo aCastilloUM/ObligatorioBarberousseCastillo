@@ -1,33 +1,21 @@
 import java.time.LocalDate;
 
 public class  Song {
-    String hashKeySong;
     String spotify_id;
     String name;
     String artists;
     int daily_rank;
-    int daily_movement;
-    int weekly_movement;
     String country;
     String snapshot_date;
-    int duration_ms;
-    String album_name;
-    String album_release;
     double tempo;
 
-    public Song( String hashKeySong, String spotify_id, String name, String artists, int daily_rank, int daily_movement, int weekly_movement,String country, String snapshot_date,int duration_ms, String album_name, String album_release, double tempo) {
-        this.hashKeySong = hashKeySong;
+    public Song(String spotify_id, String name, String artists, int daily_rank, String country, String snapshot_date, double tempo) {
         this.spotify_id = spotify_id;
         this.name = name;
         this.artists = artists;
         this.daily_rank = daily_rank;
-        this.daily_movement = daily_movement;
-        this.weekly_movement = weekly_movement;
         this.country = country;
         this.snapshot_date = snapshot_date;
-        this.duration_ms = duration_ms;
-        this.album_name = album_name;
-        this.album_release = album_release;
         this.tempo = tempo;
     }
 
@@ -63,22 +51,6 @@ public class  Song {
         this.daily_rank = daily_rank;
     }
 
-    public int getDaily_movement() {
-        return daily_movement;
-    }
-
-    public void setDaily_movement(int daily_movement) {
-        this.daily_movement = daily_movement;
-    }
-
-    public int getWeekly_movement() {
-        return weekly_movement;
-    }
-
-    public void setWeekly_movement(int weekly_movement) {
-        this.weekly_movement = weekly_movement;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -95,30 +67,6 @@ public class  Song {
         this.snapshot_date = snapshot_date;
     }
 
-    public int getDuration_ms() {
-        return duration_ms;
-    }
-
-    public void setDuration_ms(int duration_ms) {
-        this.duration_ms = duration_ms;
-    }
-
-    public String getAlbum_name() {
-        return album_name;
-    }
-
-    public void setAlbum_name(String album_name) {
-        this.album_name = album_name;
-    }
-
-    public String getAlbum_release() {
-        return album_release;
-    }
-
-    public void setAlbum_release(String album_release) {
-        this.album_release = album_release;
-    }
-
     public double getTempo() {
         return tempo;
     }
@@ -126,5 +74,4 @@ public class  Song {
     public void setTempo(double tempo) {
         this.tempo = tempo;
     }
-
 }

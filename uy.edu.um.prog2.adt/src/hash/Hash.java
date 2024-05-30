@@ -8,7 +8,7 @@ public class Hash<K,V> implements MyHash<K,V> {
     private int size;
     private int capacity;
     private HashNode<K, V> [] table;
-    public String lastHash;
+    public String firstHash;
 
     public String remplazo = "no";
 
@@ -19,7 +19,7 @@ public class Hash<K,V> implements MyHash<K,V> {
         this.table = (HashNode<K, V> []) new HashNode[capacity];
     }
 
-    public String getLastHash() {return lastHash;}
+    public String getFirstHash() {return firstHash;}
     public String getRemplazo() {return remplazo;}
     public int getSize() {return size;}
     public int getCapacity() {
@@ -97,7 +97,7 @@ public class Hash<K,V> implements MyHash<K,V> {
         key = (K) key.toString().trim(); // Recorta la clave aquí
         int index = hashFunction(key);
         if (size == 0) {
-            lastHash = (String) key;
+            firstHash = (String) key;
         }
         // Busca un lugar óptimo
         // Si el lugar ya está ocupado por un objeto con la misma clave, reemplaza el objeto
