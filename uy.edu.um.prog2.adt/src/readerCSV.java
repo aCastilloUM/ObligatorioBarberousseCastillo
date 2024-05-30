@@ -16,10 +16,12 @@ public class readerCSV {
     private Hash<String, LinkedList<Song>> world = new Hash<>(5);
 
     public void readFile(String file_name) throws EmptyHashException, InvalidKeyException {
+
         try {
             reader = new BufferedReader(new FileReader(file_name));
             int counter = 0;
             String hashKey = null;
+            boolean e = true;
             while ((line = reader.readLine()) != null) {
                 line = line.replaceAll("\"", "");
                 atributes = line.split(";");
@@ -50,19 +52,25 @@ public class readerCSV {
                     } else {
                         this.createList(hashKey);
                         world.get(hashKey).addLast(song);
-                        System.out.println("Tamanos");
-                        System.out.println(world.getSize());
-                        System.out.println(world.get(hashKey).getSize());
-                        System.out.println("Id");
-                        System.out.println(world.get(hashKey).getValueNode(0));
-                        System.out.println("Artista");
-                        System.out.println(world.get(hashKey).getValueNode(2));
-                        System.out.println("Fecha");
-                        System.out.println(world.get(hashKey).getValueNode(7));
+//                        System.out.println("Tamanos");
+//                        System.out.println(world.getSize());
+//                        System.out.println(world.get(hashKey).getSize());
+//                        System.out.println("Id");
+//                        System.out.println(world.get(hashKey).getValueNode(0));
+//                        System.out.println("Artista");
+//                        System.out.println(world.get(hashKey).getValueNode(2));
+//                        System.out.println("Fecha");
+//                        System.out.println(world.get(hashKey).getValueNode(7));
                     }
+                    // System.out.println(world.contains(hashKey));
+                    if (!world.contains(hashKey)){
+                        e = false;
+                        break;
+                    }
+                    //System.out.println(world.getSize());
+                    //System.out.println(world.getCapacity());
+                    //System.out.println(world.get(hashKey).getSize());
                 }
-                //System.out.println(hashKey);
-                //System.out.println(world.contains(hashKey));
             }
 
 
@@ -71,17 +79,18 @@ public class readerCSV {
             atributes = null;
 
             if (world.getSize()>100) {
-                System.out.println("El metodo esta agregando");;
-                System.out.println(world.contains("2/12/2023"));
-                System.out.println(world.contains("AE18/10/2023"));
-                System.out.println(world.getSize());
-                System.out.println(world.getFirstHash());
-                System.out.println(world.contains("UY18/10/2023"));
-                //Creo que el problema son las canciones con la fecha 13/5/2024
-                System.out.println(world.contains("13/5/2024"));
-                System.out.println(world.contains("PK13/5/2024"));
-                System.out.println(world.contains("13/5/2024"));
-                System.out.println(world.getRemplazo());
+//                System.out.println("El metodo esta agregando");;
+//                System.out.println(world.contains("2/12/2023"));
+//                System.out.println(world.contains("AE18/10/2023"));
+//                System.out.println(world.getSize());
+                  System.out.println(world.getFirstHash());
+//                System.out.println(world.contains("UY18/10/2023"));
+//                //Creo que el problema son las canciones con la fecha 13/5/2024
+                System.out.println(world.contains(world.firstHash));
+                System.out.println(e);
+//                System.out.println(world.contains("PK13/5/2024"));
+//                System.out.println(world.contains("13/5/2024"));
+//                System.out.println(world.getRemplazo());
             } else {
                 System.out.println("El Hash esta vacio");
             }
@@ -91,6 +100,7 @@ public class readerCSV {
             throw new RuntimeException(e);
         }
     }
+
 
     public void createList(String hashKey){
         LinkedList<Song> global = new LinkedList<>();
