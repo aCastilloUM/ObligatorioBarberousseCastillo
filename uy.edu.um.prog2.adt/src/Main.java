@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws EmptyHashException, InvalidKeyException {
         readerCSV file = new readerCSV();
-        file.readFile("C:\\Users\\agust\\OneDrive\\Escritorio\\ExcelObligatorio.csv");
+        file.readFile("C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv");
 
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;

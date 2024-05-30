@@ -14,9 +14,9 @@ public class readerCSV {
     public String line;
     public String parts[];
     public String eachPart[];
+    private Hash<String, LinkedList<Song>> world = new Hash<>(5);
 
     public void readFile(String file_name) throws EmptyHashException, InvalidKeyException {
-        Hash<String, LinkedList<Song>> world = new Hash<>(5);
         try {
             reader = new BufferedReader(new FileReader(file_name));
             int counter = 0;
@@ -40,32 +40,25 @@ public class readerCSV {
 
                     Double tempo = Double.valueOf(eachPart[23]);
 
-                    if (eachPart[6].isEmpty()){
+                    if (eachPart[6].isEmpty()) {
                         hashKey = eachPart[7];
-                    }
-                    else {
+                    } else {
                         hashKey = eachPart[6] + eachPart[7]; //Codigo del pais
                     }
                     Song song = new Song(hashKey, eachPart[0], eachPart[1], eachPart[2], daily_rank, daily_movement, weekly_movement, eachPart[6], (String) eachPart[7], duration_ms, eachPart[11], eachPart[12], tempo);
 
                     //Chequeemos si el pais ya esta registrado
 
-                        LinkedList<Song> countryDate = null;
-
-                        if (!world.contains(hashKey)) {
-                            //La fecha no fue registrada
-                            countryDate = new LinkedList<>();
-                            world.add(hashKey, countryDate);
-                            countryDate.addLast(song);
-                        }
-                        else {
-                            world.get(hashKey).addLast(song);
-                        }
-
-
+                    if (world.contains(hashKey)) {
+                        world.get(hashKey).addLast(song);
+                    } else {
+                        LinkedList<Song> global = createList(hashKey);
+                        global.addLast(song);
                     }
                 }
-                //System.out.println(hashKey);
+                System.out.println(hashKey);
+                System.out.println(world.contains(hashKey));
+            }
 
 
             reader.close();
@@ -83,7 +76,6 @@ public class readerCSV {
                 System.out.println(world.contains("PK13/5/2024"));
                 System.out.println(world.contains("13/5/2024"));
                 System.out.println(world.getRemplazo());
-
             } else {
                 System.out.println("El Hash esta vacio");
             }
@@ -94,6 +86,11 @@ public class readerCSV {
         }
     }
 
+    public LinkedList<Song> createList(String hashKey){
+        LinkedList<Song> global = new LinkedList<>();
+        world.add(hashKey, global);
+        return global;
+    }
     public LocalDate toLocalDate(String date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
         LocalDate newDate = LocalDate.parse(date,formatter);
