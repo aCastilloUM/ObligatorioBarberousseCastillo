@@ -5,17 +5,13 @@ public class  Song {
     String name;
     String artists;
     int daily_rank;
-    String country;
-    String snapshot_date;
     double tempo;
 
-    public Song(String spotify_id, String name, String artists, int daily_rank, String country, String snapshot_date, double tempo) {
+    public Song(String spotify_id, String name, String artists, int daily_rank, double tempo) {
         this.spotify_id = spotify_id;
         this.name = name;
         this.artists = artists;
         this.daily_rank = daily_rank;
-        this.country = country;
-        this.snapshot_date = snapshot_date;
         this.tempo = tempo;
     }
 
@@ -49,22 +45,6 @@ public class  Song {
 
     public void setDaily_rank(int daily_rank) {
         this.daily_rank = daily_rank;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getSnapshot_date() {
-        return snapshot_date;
-    }
-
-    public void setSnapshot_date(String snapshot_date) {
-        this.snapshot_date = snapshot_date;
     }
 
     public double getTempo() {

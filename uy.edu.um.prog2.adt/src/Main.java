@@ -1,20 +1,23 @@
 import exceptions.EmptyHashException;
 import exceptions.InvalidKeyException;
+
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws EmptyHashException, InvalidKeyException {
-        readerCSV file = new readerCSV();
-        file.readFile("C:\\Users\\agust\\OneDrive\\Escritorio\\ExcelObligatorio.csv");
+        ReadCSV file = new ReadCSV();
+        ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl();
+        file.uploadCSV("C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv");
 
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
-
+        methods.top10Song("GLB","18/10/2023");
+        System.out.println();
         System.out.println("Obligatorio Programacion 2 año 2024");
-        System.out.println(" ");
+        System.out.println();
         System.out.println("Bienvenido al consultor! ");
-        System.out.println(" ");
-
+        System.out.println();
 
         while (!salir) {
             System.out.println("Ingrese el numero de consulta que desea realizar: ");
@@ -29,8 +32,15 @@ public class Main {
 
             switch (option) {
                 case 1:
+                    System.out.println();
+                    methods.top10Song("GLB","18/10/2023");
                     System.out.println("Ha seleccionado la consulta 1.");
-                    // Llama a un método que maneje la consulta 1
+                    System.out.println("Ingrese un pais: ");
+                    String country = scanner.next();
+                    System.out.println("Ingrese una fecha en formato DD/MM/YYYY :");
+                    String date = scanner.next();
+
+                    methods.top10Song(country,date);
                     break;
                 case 2:
                     System.out.println("Ha seleccionado la consulta 2.");
