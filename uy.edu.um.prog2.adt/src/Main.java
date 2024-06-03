@@ -6,9 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws EmptyHashException, InvalidKeyException {
-        //ReadCSV file = new ReadCSV();
         ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl();
-        //file.uploadCSV("C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv");
 
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
@@ -25,7 +23,7 @@ public class Main {
             System.out.println("3. Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.");
             System.out.println("4. Cantidad de veces que aparece un artista específico en un top 50 en una fecha dada.");
             System.out.println("5. Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.");
-            System.out.println("6. Salir.");
+            System.out.println("6.   Salir.");
 
             int option = scanner.nextInt();
 
@@ -35,7 +33,7 @@ public class Main {
                     System.out.println("Ha seleccionado la consulta 1.");
                     System.out.println("Ingrese un pais: ");
                     String country = scanner.next();
-                    System.out.println("Ingrese una fecha en formato DD/MM/YYYY :");
+                    System.out.println("Ingrese una fecha en formato yyyy-MM-DD :");
                     String date = scanner.next();
 
                     methods.top10Song(country,date);
