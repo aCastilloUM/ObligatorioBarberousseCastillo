@@ -65,26 +65,21 @@ public class Hash<K,V> implements MyHash<K,V> {
 
     public void reHash(){
         int newCapacity = nextPrimeAfter(capacity*2);
-        HashNode<K,V> [] newTable = new HashNode[newCapacity]; //Creo un nuevo Array con la nueva capacidad
+        HashNode<K,V> [] newTable = new HashNode[newCapacity]; // Crear un nuevo Array con la nueva capacidad
 
-        //Debemos colocar los valores de la tabla anterior en la  nueva
+        // Colocar los valores de la tabla anterior en la nueva
         for (int i = 0; i < capacity; i++) {
             if (table[i] != null) {
                 K key = table[i].getKey();
                 V value = table[i].getValue();
                 int newIndex = hashFunction(key) % newCapacity; // Recalcula el índice con la nueva capacidad
-                if (newTable[newIndex] == null) {
-                    newTable[newIndex] = new HashNode<>(key,value);
+                while (newTable[newIndex] != null) {
+                    newIndex = (newIndex + 1) % newCapacity; // Encuentra el siguiente índice disponible
                 }
-                else {
-                    do {
-                        newIndex = (newIndex + 1) % newCapacity;
-                    } while (newTable[newIndex] == null);
-                    newTable[newIndex] = new HashNode<>(key, value);
-                }
+                newTable[newIndex] = new HashNode<>(key, value);
             }
         }
-        //actualizamos los valores de table y capacidad
+        // Actualizar los valores de table y capacidad
         table = newTable;
         capacity = newCapacity;
     }

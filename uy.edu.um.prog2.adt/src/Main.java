@@ -40,7 +40,8 @@ public class Main {
                     break;
                 case 2:
                     System.out.println("Ha seleccionado la consulta 2.");
-                    // Llama a un método que maneje la consulta 2
+                    String day = scanner.next();
+                    System.out.println("Ingrese un dia en formato yyyy-MM-DD :");
                     break;
                 case 3:
                     System.out.println("Ha seleccionado la consulta 3.");

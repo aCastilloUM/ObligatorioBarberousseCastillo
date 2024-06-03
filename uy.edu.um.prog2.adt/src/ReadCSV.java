@@ -19,23 +19,15 @@ public class ReadCSV {
 
     public void uploadCSV(String filename) {
         try {
-            String keyActual = "****";
+            String keyActual = "*** *";
             String countryActual = "GLB";
             String date = "2024-05-13";
             int counter = 0;
             reader = new BufferedReader(new FileReader(filename));
             while ((song = reader.readLine()) != null) {
-                // Remove the surrounding double quotes
-                song = song.substring(1, song.length() - 1);
-                // Replace all "" with empty string
-                song = song.replaceAll("\"\"", "");
-                // Split the song string by semicolon String[]
-                atributes = song.split(",");
-                //song = song.replaceAll("\"", "");
+                atributes = parseLine(song);
+                if (counter > 1 && atributes.length > 2 && !atributes[0].equals("7hDoxkN20lLb06zifzYnD2")) {
 
-                System.out.println(song);
-                //System.out.println(atributes[2]);
-                if (counter > 1 && atributes.length > 2) {
                     if (atributes[6].isEmpty()) {
                         atributes[6] = countryActual;
                     }
@@ -86,14 +78,47 @@ public class ReadCSV {
 
     // Método para convertir una fecha en formato "DD/MM/YYYY" a LocalDate en formato "YYYY/MM/DD"
     public static LocalDate convertirYRevertirFecha(String fechaStr) {
+        // Divide la cadena de fecha en partes usando '/'
+        String[] partes = fechaStr.split("/");
+        // Asegura que el día y el mes tengan dos dígitos
+        String dia = partes[0].length() == 1 ? "0" + partes[0] : partes[0];
+        String mes = partes[1].length() == 1 ? "0" + partes[1] : partes[1];
+        // Crea la cadena de fecha con el formato "dd/MM/yyyy"
+        String fechaFormateada = dia + "/" + mes + "/" + partes[2];
+
         // Define el formato de entrada
-        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        // Define el formato de salida
-        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         // Parsea la cadena de fecha a LocalDate
-        LocalDate fecha = LocalDate.parse(fechaStr, formatoEntrada);
-        // Convierte la fecha al formato "YYYY/MM/DD" y la retorna
-        return LocalDate.parse(fecha.format(formatoSalida));
+        return LocalDate.parse(fechaFormateada, formatoEntrada);
     }
+
+    private String[] parseLine(String line) {
+        boolean inQuotes = false;
+        StringBuilder sb = new StringBuilder();
+        java.util.LinkedList<String> tokens = new java.util.LinkedList<>();
+
+        char[] chars = line.toCharArray();
+        for (char c : chars) {
+            switch (c) {
+                case '"':
+                    inQuotes = !inQuotes;
+                    break;
+                case ';':
+                    if (inQuotes) {
+                        sb.append(c);
+                    } else {
+                        tokens.add(sb.toString());
+                        sb.setLength(0);
+                    }
+                    break;
+                default:
+                    sb.append(c);
+                    break;
+            }
+        }
+        tokens.add(sb.toString()); // Agregar el último token
+        return tokens.toArray(new String[0]);
+    }
+
 }
