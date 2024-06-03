@@ -6,13 +6,12 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws EmptyHashException, InvalidKeyException {
-        ReadCSV file = new ReadCSV();
+        //ReadCSV file = new ReadCSV();
         ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl();
-        file.uploadCSV("C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv");
+        //file.uploadCSV("C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv");
 
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
-        methods.top10Song("GLB","18/10/2023");
         System.out.println();
         System.out.println("Obligatorio Programacion 2 año 2024");
         System.out.println();
@@ -33,7 +32,6 @@ public class Main {
             switch (option) {
                 case 1:
                     System.out.println();
-                    methods.top10Song("GLB","18/10/2023");
                     System.out.println("Ha seleccionado la consulta 1.");
                     System.out.println("Ingrese un pais: ");
                     String country = scanner.next();
@@ -71,6 +69,7 @@ public class Main {
             if (!salir) {
                 boolean respuestaValida = false;
                 while (!respuestaValida) {
+                    System.out.println();
                     System.out.println("¿Desea realizar otra consulta? (si/no): ");
                     String continuar = scanner.next();
                     if (continuar.equals("si")) {

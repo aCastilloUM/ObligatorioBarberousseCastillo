@@ -9,8 +9,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class ReadCSV {
-    public Hash<String, LinkedList<String>> world = new Hash<>(5);
-    public Hash<String, Song> songs = new Hash<>(5);
+    private Hash<String, LinkedList<String>> world = new Hash<>(5);
+    private Hash<String, Song> songs = new Hash<>(5);
     public BufferedReader reader;
     private String song;
     public String[] atributes;
