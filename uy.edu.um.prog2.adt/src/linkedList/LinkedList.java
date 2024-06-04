@@ -14,6 +14,22 @@ public class LinkedList<T> implements MyList<T> {
         this.size = 0;
     }
 
+    public ListNode<T> getHead() {
+        return head;
+    }
+
+    public ListNode<T> getLast() {
+        return last;
+    }
+
+    public void setHead(ListNode<T> head) {
+        this.head = head;
+    }
+
+    public void setLast(ListNode<T> last) {
+        this.last = last;
+    }
+
     public int getSize() {
         return size;
     }
@@ -118,4 +134,5 @@ public class LinkedList<T> implements MyList<T> {
             temp = temp.getNext();
         } while (temp != null);
     }
+
 }

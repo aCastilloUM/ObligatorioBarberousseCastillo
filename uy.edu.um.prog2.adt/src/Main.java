@@ -3,7 +3,6 @@ import exceptions.InvalidKeyException;
 
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) throws EmptyHashException, InvalidKeyException {
         ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl();
@@ -40,8 +39,9 @@ public class Main {
                     break;
                 case 2:
                     System.out.println("Ha seleccionado la consulta 2.");
-                    String day = scanner.next();
                     System.out.println("Ingrese un dia en formato yyyy-MM-DD :");
+                    String day = scanner.next();
+                    methods.top5RepeatedSongs(day);
                     break;
                 case 3:
                     System.out.println("Ha seleccionado la consulta 3.");

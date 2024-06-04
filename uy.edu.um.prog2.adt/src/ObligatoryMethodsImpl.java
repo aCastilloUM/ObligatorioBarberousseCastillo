@@ -1,7 +1,9 @@
 import exceptions.EmptyHashException;
 import exceptions.InvalidKeyException;
 import linkedList.LinkedList;
+import linkedList.ListNode;
 
+import java.io.FilterOutputStream;
 import java.security.Key;
 
 public class ObligatoryMethodsImpl implements ObligatoryMethods{
@@ -29,5 +31,39 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods{
 
     public void top5RepeatedSongs(String date){
 
+        int counter = 0;
+        LinkedList<ListNode<String>> dateSongs = new LinkedList<>();
+        ListNode<String> firstNotLinkedNode = null;
+
+        for (int i = 0 ; i<abbreviations.length; i++){
+            counter++;
+            String key = abbreviations[i] + date;
+            System.out.println(key);
+
+            try{
+                System.out.println("Sexo");
+                if (counter == 1){
+                    dateSongs.addFirst(file.getWorld().get(key).getHead());
+                    System.out.println(file.getWorld().get(key).getHead().getNext().getValue());
+                }
+                else{
+                    firstNotLinkedNode = file.getWorld().get(key).getHead();
+                    dateSongs.addLast(firstNotLinkedNode);
+                }
+            } catch (InvalidKeyException | exceptions.EmptyHashException EmptyHashException ){
+                System.out.println("No hay pais");
+            }
+        }
+
+
+        System.out.println(dateSongs.getSize());
+        System.out.println(counter);
+        System.out.println(dateSongs.getHead().getNext());
+
     }
+
+
+
+    String[] abbreviations = {"GLB","ZA"};
+
 }
