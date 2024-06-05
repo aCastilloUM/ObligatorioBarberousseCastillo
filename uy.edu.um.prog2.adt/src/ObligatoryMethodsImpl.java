@@ -2,9 +2,11 @@ import exceptions.EmptyHashException;
 import exceptions.InvalidKeyException;
 import linkedList.LinkedList;
 import linkedList.ListNode;
+import org.w3c.dom.NodeList;
 
 import java.io.FilterOutputStream;
 import java.security.Key;
+import java.util.List;
 
 public class ObligatoryMethodsImpl implements ObligatoryMethods{
     ReadCSV file;
@@ -41,10 +43,9 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods{
             System.out.println(key);
 
             try{
-                System.out.println("Sexo");
                 if (counter == 1){
                     dateSongs.addFirst(file.getWorld().get(key).getHead());
-                    System.out.println(file.getWorld().get(key).getHead().getNext().getValue());
+                    enlazarNodosRecursivo(dateSongs.getHead().getValue(),file.getWorld().get(key).getHead().getNext());
                 }
                 else{
                     firstNotLinkedNode = file.getWorld().get(key).getHead();
@@ -54,14 +55,18 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods{
                 System.out.println("No hay pais");
             }
         }
-
-
-        System.out.println(dateSongs.getSize());
-        System.out.println(counter);
-        System.out.println(dateSongs.getHead().getNext());
-
+        //Veamos q se mantenga
+        System.out.println(dateSongs.getHead().getValue().getValue());
+        System.out.println(dateSongs.getHead().getNext().getNext().getNext().getValue().getValue());
     }
 
+    public static void enlazarNodosRecursivo(ListNode<String> a, ListNode<String> b) {
+        if (a == null || b.getNext() == null)
+            return;
+
+        a.setNext(b);
+        enlazarNodosRecursivo(a, b.getNext());
+    }
 
 
     String[] abbreviations = {"GLB","ZA"};
