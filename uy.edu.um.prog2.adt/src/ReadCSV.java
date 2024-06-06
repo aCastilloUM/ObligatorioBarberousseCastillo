@@ -15,7 +15,7 @@ public class ReadCSV {
     private Hash<String, Song> songs = new Hash<>(5);
     public BufferedReader reader;
     private String song;
-    public String[] atributes;
+    public String[] attributes;
 
     public void uploadCSV(String filename) {
         try {
@@ -25,33 +25,78 @@ public class ReadCSV {
             int counter = 0;
             reader = new BufferedReader(new FileReader(filename));
             while ((song = reader.readLine()) != null) {
-                atributes = parseLine(song);
-                if (counter > 1 && atributes.length > 2 && !atributes[0].equals("7hDoxkN20lLb06zifzYnD2")) {
+                attributes = song.split("\",\"|\",|,\"");
 
-                    if (atributes[6].isEmpty()) {
-                        atributes[6] = countryActual;
+                for (int i = 0; i < attributes.length; i++) {
+                    attributes[i] = attributes[i].replaceAll("\"", "");
+                }
+                if (counter > 0 && attributes.length > 2 && !attributes[0].equals("7hDoxkN20lLb06zifzYnD2") && !attributes[0].equals("11IqNbLOD4s4nVYSuEttFR")) {
+
+                    if (attributes[6].isEmpty()) {
+                        attributes[6] = countryActual;
                     }
 
-                    if (atributes[7].isEmpty()) {
-                        atributes[7] = date;
+                    if (attributes[7].isEmpty()) {
+                        attributes[7] = date;
                     }
 
-                    if (!songs.contains(atributes[0])) {
+                    if (!songs.contains(attributes[0])) {
                         // Aquí modificas para seleccionar los atributos correctamente según tu archivo CSV
-                        int daily_rank = Integer.parseInt(atributes[3]);
-                        double tempo = Double.parseDouble(atributes[23]);
-                        Song s = new Song(atributes[0], atributes[1], atributes[2], daily_rank, tempo);
-                        songs.add(atributes[0], s);
+                        int daily_rank = Integer.parseInt(attributes[3]);
+                        double tempo = Double.parseDouble(attributes[23]);
+                        Song s = new Song(attributes[0], attributes[1], attributes[2], daily_rank, tempo);
+                        songs.add(attributes[0], s);
                     }
 
-                    String hashkey = atributes[6] + convertirYRevertirFecha(atributes[7]);
+                    String hashkey = attributes[6] + attributes[7];
                     if (hashkey.equals(keyActual)) {
-                        this.world.get(hashkey).addLast(atributes[0]);
+                        this.world.get(hashkey).addLast(attributes[0]);
                     } else {
                         this.createList(hashkey);
-                        world.get(hashkey).addLast(atributes[0]);
+                        world.get(hashkey).addLast(attributes[0]);
                         keyActual = hashkey;
                     }
+                }
+
+                else if (attributes[0].equals("7hDoxkN20lLb06zifzYnD2")) {
+                    attributes[1] = "Ishq - From ; Lost Found";
+                    if (!songs.contains(attributes[0])) {
+                        // Aquí modificas para seleccionar los atributos correctamente según tu archivo CSV
+                        int daily_rank = Integer.parseInt(attributes[3]);
+                        double tempo = Double.parseDouble(attributes[23]);
+                        Song s = new Song(attributes[0], attributes[1], attributes[2], daily_rank, tempo);
+                        songs.add(attributes[0], s);
+                        System.out.println(songs.getSize());
+                    }
+
+                    String hashkey = attributes[6] + attributes[7];
+                    if (hashkey.equals(keyActual)) {
+                        this.world.get(hashkey).addLast(attributes[0]);
+                    } else {
+                        this.createList(hashkey);
+                        world.get(hashkey).addLast(attributes[0]);
+                        keyActual = hashkey;
+                    }
+
+                } else if (attributes[0].equals("11IqNbLOD4s4nVYSuEttFR")) {
+                    if (!songs.contains(attributes[0])) {
+                        // Aquí modificas para seleccionar los atributos correctamente según tu archivo CSV
+                        int daily_rank = Integer.parseInt(attributes[4]);
+                        double tempo = Double.parseDouble(attributes[24]);
+                        Song s = new Song(attributes[0], attributes[1], attributes[3], daily_rank, tempo);
+                        songs.add(attributes[0], s);
+                        System.out.println(songs.getSize());
+                    }
+
+                    String hashkey = attributes[7] + attributes[8];
+                    if (hashkey.equals(keyActual)) {
+                        this.world.get(hashkey).addLast(attributes[0]);
+                    } else {
+                        this.createList(hashkey);
+                        world.get(hashkey).addLast(attributes[0]);
+                        keyActual = hashkey;
+                    }
+
                 }
                 counter++;
             }
@@ -79,7 +124,7 @@ public class ReadCSV {
     // Método para convertir una fecha en formato "DD/MM/YYYY" a LocalDate en formato "YYYY/MM/DD"
     public static LocalDate convertirYRevertirFecha(String fechaStr) {
         // Divide la cadena de fecha en partes usando '/'
-        String[] partes = fechaStr.split("/");
+        String[] partes = fechaStr.split("-");
         // Asegura que el día y el mes tengan dos dígitos
         String dia = partes[0].length() == 1 ? "0" + partes[0] : partes[0];
         String mes = partes[1].length() == 1 ? "0" + partes[1] : partes[1];
@@ -93,32 +138,5 @@ public class ReadCSV {
         return LocalDate.parse(fechaFormateada, formatoEntrada);
     }
 
-    private String[] parseLine(String line) {
-        boolean inQuotes = false;
-        StringBuilder sb = new StringBuilder();
-        java.util.LinkedList<String> tokens = new java.util.LinkedList<>();
-
-        char[] chars = line.toCharArray();
-        for (char c : chars) {
-            switch (c) {
-                case '"':
-                    inQuotes = !inQuotes;
-                    break;
-                case ';':
-                    if (inQuotes) {
-                        sb.append(c);
-                    } else {
-                        tokens.add(sb.toString());
-                        sb.setLength(0);
-                    }
-                    break;
-                default:
-                    sb.append(c);
-                    break;
-            }
-        }
-        tokens.add(sb.toString()); // Agregar el último token
-        return tokens.toArray(new String[0]);
-    }
 
 }
