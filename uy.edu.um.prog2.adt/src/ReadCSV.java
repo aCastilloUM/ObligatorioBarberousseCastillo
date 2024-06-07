@@ -66,7 +66,6 @@ public class ReadCSV {
                         double tempo = Double.parseDouble(attributes[23]);
                         Song s = new Song(attributes[0], attributes[1], attributes[2], daily_rank, tempo);
                         songs.add(attributes[0], s);
-                        System.out.println(songs.getSize());
                     }
 
                     String hashkey = attributes[6] + attributes[7];
@@ -85,7 +84,7 @@ public class ReadCSV {
                         double tempo = Double.parseDouble(attributes[24]);
                         Song s = new Song(attributes[0], attributes[1], attributes[3], daily_rank, tempo);
                         songs.add(attributes[0], s);
-                        System.out.println(songs.getSize());
+
                     }
 
                     String hashkey = attributes[7] + attributes[8];

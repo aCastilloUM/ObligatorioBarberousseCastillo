@@ -26,10 +26,14 @@ public class Hash<K,V> implements MyHash<K,V> {
         return capacity;
     }
 
-    private int hashFunction(K key) {
+    public HashNode<K, V>[] getTable() {
+        return table;
+    }
+
+    private int hashFunction(K key, int capacity) {
         // Calcula la suma de los valores ASCII de los caracteres en la clave
         int sum = 0;
-        String strKey = key.toString(); //Convertimos la clave a un string
+        String strKey = key.toString(); // Convertimos la clave a un string
         for (int i = 0; i < strKey.length(); i++) {
             sum += strKey.charAt(i);
         }
@@ -64,15 +68,15 @@ public class Hash<K,V> implements MyHash<K,V> {
     }
 
     public void reHash(){
-        int newCapacity = nextPrimeAfter(capacity*2);
-        HashNode<K,V> [] newTable = new HashNode[newCapacity]; // Crear un nuevo Array con la nueva capacidad
+        int newCapacity = nextPrimeAfter(capacity * 2);
+        HashNode<K, V>[] newTable = (HashNode<K, V>[]) new HashNode[newCapacity]; // Crear un nuevo Array con la nueva capacidad
 
         // Colocar los valores de la tabla anterior en la nueva
         for (int i = 0; i < capacity; i++) {
             if (table[i] != null) {
                 K key = table[i].getKey();
                 V value = table[i].getValue();
-                int newIndex = hashFunction(key) % newCapacity; // Recalcula el índice con la nueva capacidad
+                int newIndex = hashFunction(key, newCapacity); // Recalcula el índice con la nueva capacidad
                 while (newTable[newIndex] != null) {
                     newIndex = (newIndex + 1) % newCapacity; // Encuentra el siguiente índice disponible
                 }
@@ -90,7 +94,7 @@ public class Hash<K,V> implements MyHash<K,V> {
             reHash();
         }
         key = (K) key.toString().trim(); // Recorta la clave aquí
-        int index = hashFunction(key);
+        int index = hashFunction(key, capacity);
         if (size == 0) {
             firstHash = (String) key;
         }
@@ -113,28 +117,30 @@ public class Hash<K,V> implements MyHash<K,V> {
     @Override
     public boolean contains(K key) {
         key = (K) key.toString().trim();
-        int index = hashFunction(key);
-        int startIndex = index;
+        int index = hashFunction(key, capacity);
+        int startIndex = index; // Definimos startIndex
 
-        while (table[index] != null) {
-            if (table[index].getKey().equals(key)) {
-                return true;
-            }
+        // Iterar hasta encontrar la clave o llegar al punto de partida nuevamente
+        while (table[index] != null && !table[index].getKey().equals(key)) {
             index = (index + 1) % capacity;
+            // Si volvemos al punto de partida, la clave no está en la tabla
             if (index == startIndex) {
-                break;
+                return false;
             }
         }
-        return false;
+
+        // Si encontramos la clave, devolvemos true
+        return table[index] != null && table[index].getKey().equals(key);
     }
+
 
     @Override
     public void remove(K key) throws InvalidKeyException {
-        int index = hashFunction(key);
-        int startIndex =index;
+        int index = hashFunction(key, capacity);
+        int startIndex = index;
         boolean found = false;
 
-        //Busco el nodo a eliminar
+        // Busco el nodo a eliminar
         while (table[index] != null) {
             if (table[index].getKey().equals(key)) {
                 found = true;
@@ -155,7 +161,7 @@ public class Hash<K,V> implements MyHash<K,V> {
         size--;
 
         // Reinsertar los elementos siguientes para evitar problemas de búsqueda
-        index = (index +1 ) % capacity;
+        index = (index + 1) % capacity;
         while (table[index] != null) {
             HashNode<K, V> nodeToRehash = table[index];
             table[index] = null;
@@ -168,24 +174,26 @@ public class Hash<K,V> implements MyHash<K,V> {
 
     @Override
     public V get(K key) throws InvalidKeyException, EmptyHashException {
-        if (size == 0) {throw new EmptyHashException();}
+        if (size == 0) {
+            throw new EmptyHashException();
+        }
 
-        int index = hashFunction(key); //Buscamos el valor de la key en HashFunction
+        int index = hashFunction(key, capacity); // Buscamos el valor de la key en HashFunction
         int startIndex = index;
 
         if (table[index] == null) {
+            System.out.println(index);
             throw new InvalidKeyException();
         } else {
             while (table[index] != null) {
-                if (table[index].getKey().equals(key)) { //Comparamos la key otorgada con la de la tabla
+                if (table[index].getKey().equals(key)) { // Comparamos la key otorgada con la de la tabla
                     return table[index].getValue();
                 }
-                index = (index + 1) % capacity; //nos movemos 1
-                if (index == startIndex) { //Si recorrimos toda la tabla, salimos del bucle
+                index = (index + 1) % capacity; // Nos movemos 1
+                if (index == startIndex) { // Si recorrimos toda la tabla, salimos del bucle
                     break;
                 }
             }
-
         }
         throw new InvalidKeyException();
     }

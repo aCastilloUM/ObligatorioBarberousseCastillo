@@ -1,5 +1,7 @@
 import exceptions.EmptyHashException;
 import exceptions.InvalidKeyException;
+import hash.Hash;
+import heap.Heap;
 import linkedList.LinkedList;
 import linkedList.ListNode;
 import org.w3c.dom.NodeList;
@@ -25,46 +27,86 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods{
         System.out.println(file.getWorld().getFirstHash());
         String key = country + date;
         LinkedList<String> top50 = file.getWorld().get(key);
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < top50.getSize(); i++){
             String songKey = top50.getValueNode(i);
             Song s = file.getSongs().get(songKey);
             System.out.println((i+1) + " - " + s.getName() + "    " + s.getArtists());
         }
     }
     LinkedList<ListNode<String>> dateSongs = new LinkedList<>();
-    public void top5RepeatedSongs(String date){
-
+    public void top5RepeatedSongs(String date) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException {
+        System.out.println(file.getWorld().getSize());
         int counter = 0;
-        ListNode<String> firstNotLinkedNode = null;
+        Hash<String, Integer> songsAppearances = new Hash<>(5);
+        Heap<Integer, String> top5 = new Heap<>();
 
         for (int i = 0 ; i<abbreviations.length; i++){
-            counter++;
             String key = abbreviations[i] + date;
-            System.out.println(key);
+            LinkedList<String> top50 = file.getWorld().get(key);
+            if (counter == 0){
+                dateSongs.addFirst(top50.getHead());
+                enlazarNodosRecursivo(dateSongs.getHead().getValue(),top50.getHead().getNext());
 
-            try{
-                if (counter == 1){
-                    dateSongs.addFirst(file.getWorld().get(key).getHead());
-                    enlazarNodosRecursivo(dateSongs.getHead().getValue(),file.getWorld().get(key).getHead().getNext());
-                    System.out.println(dateSongs.getSize());
-                    dateSongs.printList();
-                }
+            }
                 else{
-                    getTail(dateSongs.getHead().getValue()).setNext(file.getWorld().get(key).getHead());
-                    dateSongs.printList();
-                    System.out.println(dateSongs.getSize());
-                    enlazarNodosRecursivo(dateSongs.getLast().getValue(), file.getWorld().get(key).getHead());
+                    enlazarNodosRecursivo(dateSongs.getLast().getValue(), top50.getHead());
                 }
-            } catch (InvalidKeyException | exceptions.EmptyHashException EmptyHashException ){
-                System.out.println("No hay pais");
+            counter++;
+        }
+
+
+        String keyprueba = dateSongs.getValueNode(1).getValue().trim();
+        int connt = 0;
+        for (int i = 0 ; i<dateSongs.getSize(); i++ ){
+            if (keyprueba.equals(dateSongs.getValueNode(i).getValue())){
+                connt++;
+            }
+
+        }
+        System.out.println("Cont " + connt);
+
+
+        int cantidadIF = 0;
+        for (int i = 0 ; i<dateSongs.getSize(); i++ ){
+            String key = dateSongs.getValueNode(i).getValue().trim();
+
+            //Chequeo que el tema no este en el hash
+
+            if (!songsAppearances.contains(key)){
+                songsAppearances.add(key,1);
+                cantidadIF++;
+
+            }
+            else{
+                Integer appareances = songsAppearances.get(key);
+                appareances++;
+                songsAppearances.add(key,appareances);
             }
         }
-        //Veamos q se mantenga
-        System.out.println(dateSongs.getSize());
+
+
+        for ( int i = 0; i < songsAppearances.getTable().length ; i++){
+
+            if (songsAppearances.getTable()[i] != null){
+                System.out.println(songsAppearances.getTable()[i].getKey() +"   " + songsAppearances.getTable()[i].getValue());
+            }
+        }
+
+
+        //Sacamos las canciones del hash y las ponemos en un heap
+        for ( int i = 0; i < songsAppearances.getTable().length ; i++){
+            if (songsAppearances.getTable()[i] != null){
+                top5.add(songsAppearances.getTable()[i].getValue(),songsAppearances.getTable()[i].getKey());
+            }
+        }
+        System.out.println("Top 5 canciones en "+ date);
+        for (int i = 0; i < 5; i++) {
+            System.out.println(file.getSongs().get(top5.get()).getName());
+        }
     }
 
     public void enlazarNodosRecursivo(ListNode<String> a, ListNode<String> b) {
-        if (b == null || b.getNext() == null) // Verificar si b o su siguiente nodo son nulos
+        if (b == null) // Verificar si b o su siguiente nodo son nulos
             return;
 
         this.dateSongs.addLast(b);
@@ -72,15 +114,8 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods{
         enlazarNodosRecursivo(b, b.getNext());
     }
 
-    public static ListNode<String> getTail(ListNode<String> head) {
-        // Caso base: si la cabeza es nula o su siguiente nodo es nulo, la cola también será nula
-        if (head == null || head.getNext() == null) {
-            return head;
-        }
-
-        // Caso recursivo: llamar al método con el siguiente nodo
-        return getTail(head.getNext());
-    }
-    String[] abbreviations = {"GLB","ZA"};
-
+    String[] abbreviations= {"GLB","ZA","VN","VE","UY","US","UA","TW","TR","TH","SV","SK","SG","SE","SA","RO","PY","PT","PL","PK","PH","PE","PA","NZ","NO",
+            "NL","NI","NG","MY","MX","MA","LV","LU","LT","KZ","KR","JP","IT","IS","IN","IL","IE","ID","HU","HN","HK","GT","GR","GB","FR","FI","ES","EG","EE",
+            "EC","DO","DK","DE","CZ","CR","CO","CL","CH","CA","BY","BR","BO",
+            "BG","BE","AU","AT","AR","AE"};
 }

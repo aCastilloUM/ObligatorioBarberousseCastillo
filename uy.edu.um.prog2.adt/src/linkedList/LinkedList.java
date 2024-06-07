@@ -53,16 +53,17 @@ public class LinkedList<T> implements MyList<T> {
 
     @Override
     public void addLast(T value) {
+        ListNode<T> newNode = new ListNode<>(value);
         if (head == null){
-            head = new ListNode<T>(value);
-            this.last = this.head;
+            head = newNode;
+            last = newNode;
         } else {
-            ListNode<T> newNode = new ListNode<>(value);
             ListNode<T> temp = this.head;
             while (temp.getNext() != null){
                 temp = temp.getNext();
             }
             temp.setNext(newNode);
+            last = newNode;
         }
         size++;
     }
@@ -123,6 +124,7 @@ public class LinkedList<T> implements MyList<T> {
             contador++;
         }
         temp.setNext(null);
+        last = temp;
         size = index;
     }
 

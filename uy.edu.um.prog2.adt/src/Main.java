@@ -4,7 +4,7 @@ import exceptions.InvalidKeyException;
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.Scanner;
 public class Main {
-    public static void main(String[] args) throws EmptyHashException, InvalidKeyException {
+    public static void main(String[] args) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException {
         ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl();
 
         Scanner scanner = new Scanner(System.in);
@@ -40,6 +40,7 @@ public class Main {
                 case 2:
                     System.out.println("Ha seleccionado la consulta 2.");
                     System.out.println("Ingrese un dia en formato yyyy-MM-DD :");
+                    System.out.println("Recuerde ingresar mes y dia de un digito con un cero adelante");
                     String day = scanner.next();
                     methods.top5RepeatedSongs(day);
                     break;

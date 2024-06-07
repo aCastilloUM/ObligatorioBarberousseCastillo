@@ -14,6 +14,7 @@ public class TreeNode<K,T> implements Comparable<K>{
         this.key = key;
     }
 
+
     @Override
     public int compareTo(K otherKey) {
         return (int)(this.key) - (int)(otherKey);
