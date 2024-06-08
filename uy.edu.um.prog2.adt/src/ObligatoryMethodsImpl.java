@@ -17,7 +17,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods{
     //"C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv"
     public ObligatoryMethodsImpl(){
         file = new ReadCSV();
-        file.uploadCSV("C:\\Users\\agust\\OneDrive\\Escritorio\\universal_top_spotify_songs.csv");
+        file.uploadCSV( "C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv");
     }
 
     //"C:\\Users\\agust\OneDrive\\Escritorio\\universal_top_spotify_songs.csv"

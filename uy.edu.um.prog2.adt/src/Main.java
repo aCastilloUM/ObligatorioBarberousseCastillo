@@ -1,9 +1,16 @@
 import exceptions.EmptyHashException;
 import exceptions.InvalidKeyException;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
+import java.util.Arrays;
 import java.util.Scanner;
+
 public class Main {
+    // Lista de abreviaturas de países válidos
+    private static final String[] abbreviations = {"GLB", "ZA", "VN", "VE", "UY", "US", "UA", "TW", "TR", "TH", "SV", "SK", "SG", "SE", "SA", "RO", "PY", "PT", "PL", "PK", "PH", "PE", "PA", "NZ", "NO",
+            "NL", "NI", "NG", "MY", "MX", "MA", "LV", "LU", "LT", "KZ", "KR", "JP", "IT", "IS", "IN", "IL", "IE", "ID", "HU", "HN", "HK", "GT", "GR", "GB", "FR", "FI", "ES", "EG", "EE",
+            "EC", "DO", "DK", "DE", "CZ", "CR", "CO", "CL", "CH", "CA", "BY", "BR", "BO",
+            "BG", "BE", "AU", "AT", "AR", "AE"};
+
     public static void main(String[] args) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException {
         ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl();
 
@@ -22,7 +29,7 @@ public class Main {
             System.out.println("3. Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.");
             System.out.println("4. Cantidad de veces que aparece un artista específico en un top 50 en una fecha dada.");
             System.out.println("5. Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.");
-            System.out.println("6.   Salir.");
+            System.out.println("6. Salir.");
 
             int option = scanner.nextInt();
 
@@ -30,19 +37,35 @@ public class Main {
                 case 1:
                     System.out.println();
                     System.out.println("Ha seleccionado la consulta 1.");
-                    System.out.println("Ingrese un pais: ");
-                    String country = scanner.next();
-                    System.out.println("Ingrese una fecha en formato yyyy-MM-DD :");
-                    String date = scanner.next();
-
-                    methods.top10Song(country,date);
+                    String country1;
+                    do {
+                        System.out.println("Ingrese un país (abreviatura): ");
+                        country1 = scanner.next();
+                        if (!isValidCountry(country1)) {
+                            System.out.println("País no válido. Por favor, ingrese una abreviatura válida.");
+                        }
+                    } while (!isValidCountry(country1));
+                    String date1;
+                    do {
+                        System.out.println("Ingrese una fecha en formato yyyy-MM-DD: ");
+                        date1 = scanner.next();
+                        if (!isValidDate(date1)) {
+                            System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
+                        }
+                    } while (!isValidDate(date1));
+                    methods.top10Song(country1, date1);
                     break;
                 case 2:
                     System.out.println("Ha seleccionado la consulta 2.");
-                    System.out.println("Ingrese un dia en formato yyyy-MM-DD :");
-                    System.out.println("Recuerde ingresar mes y dia de un digito con un cero adelante");
-                    String day = scanner.next();
-                    methods.top5RepeatedSongs(day);
+                    String day2;
+                    do {
+                        System.out.println("Ingrese un día en formato yyyy-MM-DD: ");
+                        day2 = scanner.next();
+                        if (!isValidDate(day2)) {
+                            System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
+                        }
+                    } while (!isValidDate(day2));
+                    methods.top5RepeatedSongs(day2);
                     break;
                 case 3:
                     System.out.println("Ha seleccionado la consulta 3.");
@@ -72,10 +95,10 @@ public class Main {
                     System.out.println();
                     System.out.println("¿Desea realizar otra consulta? (si/no): ");
                     String continuar = scanner.next();
-                    if (continuar.equals("si")) {
+                    if (continuar.equalsIgnoreCase("si")) {
                         respuestaValida = true;
                         salir = false;
-                    } else if (continuar.equals("no")) {
+                    } else if (continuar.equalsIgnoreCase("no")) {
                         respuestaValida = true;
                         salir = true;
                         System.out.println("¡Hasta luego!");
@@ -86,8 +109,14 @@ public class Main {
             }
         }
     }
+
+    // Método para verificar si el país ingresado es válido
+    private static boolean isValidCountry(String country) {
+        return Arrays.asList(abbreviations).contains(country);
+    }
+
+    // Método para verificar si la fecha ingresada es válida en el formato especificado
+    private static boolean isValidDate(String date) {
+        return date.matches("\\d{4}-\\d{2}-\\d{2}");
+    }
 }
-
-//"C:\\Users\\agust\\OneDrive\\Escritorio\\ExcelObligatorio.csv"
-
-//"C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv"
