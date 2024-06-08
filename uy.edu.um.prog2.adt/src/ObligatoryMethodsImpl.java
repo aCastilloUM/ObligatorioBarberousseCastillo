@@ -17,7 +17,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods{
     //"C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv"
     public ObligatoryMethodsImpl(){
         file = new ReadCSV();
-        file.uploadCSV( "C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv");
+        file.uploadCSV( "C:\\Users\\agust\\OneDrive\\Escritorio\\universal_top_spotify_songs.csv");
     }
 
     //"C:\\Users\\agust\OneDrive\\Escritorio\\universal_top_spotify_songs.csv"
@@ -35,75 +35,50 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods{
     }
     LinkedList<ListNode<String>> dateSongs = new LinkedList<>();
     public void top5RepeatedSongs(String date) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException {
-        System.out.println(file.getWorld().getSize());
-        int counter = 0;
-        Hash<String, Integer> songsAppearances = new Hash<>(5);
-        Heap<Integer, String> top5 = new Heap<>();
+            int counter = 0;
+            Hash<String, Integer> songsAppearances = new Hash<>(5);
+            Heap<Integer, String> top5 = new Heap<>();
 
-        for (int i = 0 ; i<abbreviations.length; i++){
-            String key = abbreviations[i] + date;
-            LinkedList<String> top50 = file.getWorld().get(key);
-            if (counter == 0){
-                dateSongs.addFirst(top50.getHead());
-                enlazarNodosRecursivo(dateSongs.getHead().getValue(),top50.getHead().getNext());
+            for (int i = 0 ; i<abbreviations.length; i++){
+                String key = abbreviations[i] + date;
+                LinkedList<String> top50 = file.getWorld().get(key);
+                if (counter == 0){
+                    dateSongs.addFirst(top50.getHead());
+                    enlazarNodosRecursivo(dateSongs.getHead().getValue(),top50.getHead().getNext());
 
-            }
+                }
                 else{
                     enlazarNodosRecursivo(dateSongs.getLast().getValue(), top50.getHead());
                 }
-            counter++;
-        }
-
-
-        String keyprueba = dateSongs.getValueNode(1).getValue().trim();
-        int connt = 0;
-        for (int i = 0 ; i<dateSongs.getSize(); i++ ){
-            if (keyprueba.equals(dateSongs.getValueNode(i).getValue())){
-                connt++;
+                counter++;
             }
 
-        }
-        System.out.println("Cont " + connt);
+            for (int i = 0 ; i<dateSongs.getSize(); i++ ){
 
+                String key = dateSongs.getValueNode(i).getValue().trim();
 
-        int cantidadIF = 0;
-        for (int i = 0 ; i<dateSongs.getSize(); i++ ){
-            String key = dateSongs.getValueNode(i).getValue().trim();
+                if (!songsAppearances.contains(key)){
+                    songsAppearances.add(key,1);
 
-            //Chequeo que el tema no este en el hash
-
-            if (!songsAppearances.contains(key)){
-                songsAppearances.add(key,1);
-                cantidadIF++;
+                }
+                else{
+                    Integer appareances = songsAppearances.get(key);
+                    appareances++;
+                    songsAppearances.add(key,appareances);
+                }
 
             }
-            else{
-                Integer appareances = songsAppearances.get(key);
-                appareances++;
-                songsAppearances.add(key,appareances);
+
+            for ( int i = 0; i < songsAppearances.getTable().length ; i++){
+                if (songsAppearances.getTable()[i] != null){
+                    top5.add(songsAppearances.getTable()[i].getValue(),songsAppearances.getTable()[i].getKey());
+                }
+            }
+            System.out.println("Top 5 canciones en "+ date);
+            for (int i = 0; i < 5; i++) {
+                System.out.println(i+". " + file.getSongs().get(top5.get()).getName() +"    " + file.getSongs().get(top5.get()).getArtists());
             }
         }
-
-
-        for ( int i = 0; i < songsAppearances.getTable().length ; i++){
-
-            if (songsAppearances.getTable()[i] != null){
-                System.out.println(songsAppearances.getTable()[i].getKey() +"   " + songsAppearances.getTable()[i].getValue());
-            }
-        }
-
-
-        //Sacamos las canciones del hash y las ponemos en un heap
-        for ( int i = 0; i < songsAppearances.getTable().length ; i++){
-            if (songsAppearances.getTable()[i] != null){
-                top5.add(songsAppearances.getTable()[i].getValue(),songsAppearances.getTable()[i].getKey());
-            }
-        }
-        System.out.println("Top 5 canciones en "+ date);
-        for (int i = 0; i < 5; i++) {
-            System.out.println(file.getSongs().get(top5.get()).getName());
-        }
-    }
 
     public void enlazarNodosRecursivo(ListNode<String> a, ListNode<String> b) {
         if (b == null) // Verificar si b o su siguiente nodo son nulos
