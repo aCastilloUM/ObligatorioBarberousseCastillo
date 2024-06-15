@@ -88,6 +88,7 @@ public class ReadCSV {
                     }
 
                     String hashkey = attributes[7] + attributes[8];
+
                     if (hashkey.equals(keyActual)) {
                         this.world.get(hashkey).addLast(attributes[0]);
                     } else {

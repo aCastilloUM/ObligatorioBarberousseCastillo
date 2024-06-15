@@ -20,6 +20,10 @@ public class Heap<K,T> implements MyHeap<K,T>{
         return root;
     }
 
+    public int getSize(){
+        return this.table.size();
+    }
+
     public ArrayList<HeapNode<K, T>> getTable() {
         return table;
     }

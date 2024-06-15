@@ -1,4 +1,5 @@
 import exceptions.EmptyHashException;
+import exceptions.EmptyStackException;
 import exceptions.InvalidKeyException;
 
 import java.util.Arrays;
@@ -11,7 +12,7 @@ public class Main {
             "EC", "DO", "DK", "DE", "CZ", "CR", "CO", "CL", "CH", "CA", "BY", "BR", "BO",
             "BG", "BE", "AU", "AT", "AR", "AE"};
 
-    public static void main(String[] args) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException {
+    public static void main(String[] args) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException {
         ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl();
 
         Scanner scanner = new Scanner(System.in);
@@ -85,7 +86,7 @@ public class Main {
                             System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
                         }
                     } while (!isValidDate(last));
-
+                    System.out.println("Top 7 artistas: ");
                     methods.top7Artist(first, last);
 
 
