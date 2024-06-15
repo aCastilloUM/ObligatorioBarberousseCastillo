@@ -69,7 +69,26 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("Ha seleccionado la consulta 3.");
-                    // Llama a un método que maneje la consulta 3
+                    String first;
+                    do {
+                        System.out.println("Ingrese un día en formato yyyy-MM-DD: ");
+                        first = scanner.next();
+                        if (!isValidDate(first)) {
+                            System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
+                        }
+                    } while (!isValidDate(first));
+                    String last;
+                    do {
+                        System.out.println("Ingrese un día en formato yyyy-MM-DD: ");
+                        last = scanner.next();
+                        if (!isValidDate(last)) {
+                            System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
+                        }
+                    } while (!isValidDate(last));
+
+                    methods.top7Artist(first, last);
+
+
                     break;
                 case 4:
                     System.out.println("Ha seleccionado la consulta 4.");

@@ -19,4 +19,6 @@ public interface MyList<T> {
     void cut(int index);
 
     void printList();
+
+    int getSize();
 }
