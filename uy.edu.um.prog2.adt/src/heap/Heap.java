@@ -53,20 +53,15 @@ public class Heap<K,T> implements MyHeap<K,T>{
         }
     }
 
-    public T get () throws exceptions.InvalidKeyException.EmptyHeapException {
-        if (table.size() == 0) {
+    public T get() throws exceptions.InvalidKeyException.EmptyHeapException {
+        if (table.isEmpty()) {
             throw new exceptions.InvalidKeyException.EmptyHeapException();
         }
 
         HeapNode<K, T> rootNode = table.get(0);
-
-        int lastIndex = table.size() - 1;
-        table.set(0, table.get(lastIndex));
-        table.remove(lastIndex);
-
-        heapifyDown(0);
         return rootNode.getData();
     }
+
 
     public void delete (K key) throws exceptions.InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException {
         if (table.isEmpty()) {

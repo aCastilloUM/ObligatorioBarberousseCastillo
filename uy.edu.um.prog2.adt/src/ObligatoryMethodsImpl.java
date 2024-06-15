@@ -42,7 +42,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
 
     LinkedList<ListNode<String>> dateSongs = new LinkedList<>();
 
-    public void top5RepeatedSongs(String date) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException {
+    public void top5RepeatedSongs(String date) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException {
         int counter = 0;
         Hash<String, Integer> songsAppearances = new Hash<>(5);
         Heap<Integer, String> top5 = new Heap<>();
@@ -53,7 +53,6 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             if (counter == 0) {
                 dateSongs.addFirst(top50.getHead());
                 enlazarNodosRecursivo(dateSongs.getHead().getValue(), top50.getHead().getNext());
-
             } else {
                 enlazarNodosRecursivo(dateSongs.getLast().getValue(), top50.getHead());
             }
@@ -61,18 +60,15 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         }
 
         for (int i = 0; i < dateSongs.getSize(); i++) {
-
             String key = dateSongs.getValueNode(i).getValue().trim();
 
             if (!songsAppearances.contains(key)) {
                 songsAppearances.add(key, 1);
-
             } else {
-                Integer appareances = songsAppearances.get(key);
-                appareances++;
-                songsAppearances.add(key, appareances);
+                Integer appearances = songsAppearances.get(key);
+                appearances++;
+                songsAppearances.add(key, appearances);
             }
-
         }
 
         for (int i = 0; i < songsAppearances.getTable().length; i++) {
@@ -80,11 +76,18 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                 top5.add(songsAppearances.getTable()[i].getValue(), songsAppearances.getTable()[i].getKey());
             }
         }
+
         System.out.println("Top 5 canciones en " + date);
         for (int i = 0; i < 5; i++) {
-            System.out.println((i+1) + " - " + file.getSongs().get(top5.get()).getName() + "    " + file.getSongs().get(top5.get()).getArtists());
+            if (top5.getSize() > 0) { // Asegúrate de que hay elementos en el heap antes de intentar obtener y eliminar
+                String songKey = top5.get();
+                int appearances = songsAppearances.get(songKey); // Obtener el número de apariciones
+                System.out.println((i + 1) + " - " + file.getSongs().get(songKey).getName() + "    " + file.getSongs().get(songKey).getArtists() + " (" + appearances + ") apariciones");
+                top5.delete(i); // Elimina el elemento en el heap por clave
+            }
         }
     }
+
 
     public void top7Artist(String first, String last) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException {
         MyList<LocalDate> dates = new LinkedList<>();
