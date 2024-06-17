@@ -19,14 +19,11 @@ import java.util.List;
 public class ObligatoryMethodsImpl implements ObligatoryMethods {
     ReadCSV file;
 
-    //"C:\\Users\\agust\\OneDrive\\Escritorio\\universal_top_spotify_songs.csv"
-    //"C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv"
-    public ObligatoryMethodsImpl() {
+    public ObligatoryMethodsImpl(String csv) {
         file = new ReadCSV();
-        file.uploadCSV("C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv");
+        file.uploadCSV(csv);
     }
 
-    //"C:\Users\agust\OneDrive\Escritorio\/universal_top_spotify_songs.csv"
     @Override
     public void top10Song(String country, String date) throws EmptyHashException, InvalidKeyException {
         try {
