@@ -13,16 +13,25 @@ public class Main {
             "BG", "BE", "AU", "AT", "AR", "AE"};
 
     public static void main(String[] args) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException {
-        ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl();
 
         Scanner scanner = new Scanner(System.in);
-        boolean salir = false;
+
+        // Pedir al usuario el path del archivo CSV
+        System.out.println("Ingrese el path del archivo CSV: ");
+        //"C:\\Users\\agust\\OneDrive\\Escritorio\\universal_top_spotify_songs.csv"
+        //"C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv"
+        System.out.println();
+        String csvPath = scanner.nextLine();
+
         System.out.println();
         System.out.println("Obligatorio Programacion 2 año 2024");
         System.out.println();
         System.out.println("Bienvenido al consultor! ");
         System.out.println();
 
+        ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl(csvPath);
+
+        boolean salir = false;
         while (!salir) {
             int option = -1;
             boolean validOption = false;
