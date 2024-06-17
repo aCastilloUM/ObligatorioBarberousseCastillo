@@ -130,7 +130,42 @@ public class Main {
                     break;
                 case 5:
                     System.out.println("Ha seleccionado la consulta 5.");
-                    // Llama a un método que maneje la consulta 5
+                    double tempo1;
+                    do {
+                        System.out.println("Ingrese el tempo mínimo: ");
+                        tempo1 = scanner.nextDouble();
+                        if (tempo1 < 0) {
+                            System.out.println("El tempo no puede ser negativo. Por favor, ingrese un valor válido.");
+                        }
+                    } while (tempo1 < 0);
+                    double tempo2;
+                    do {
+                        System.out.println("Ingrese el tempo máximo: ");
+                        tempo2 = scanner.nextDouble();
+                        if (tempo2 < 0) {
+                            System.out.println("El tempo no puede ser negativo. Por favor, ingrese un valor válido.");
+                        }
+                    } while (tempo2 < 0);
+
+                    String date5;
+                    do {
+                        System.out.println("Ingrese la fecha de inicio en formato yyyy-MM-DD: ");
+                        date5 = scanner.next();
+                        if (!isValidDate(date5)) {
+                            System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
+                        }
+                    } while (!isValidDate(date5));
+                    String date6;
+                    do {
+                        System.out.println("Ingrese la fecha de fin en formato yyyy-MM-DD: ");
+                        date6 = scanner.next();
+                        if (!isValidDate(date6)) {
+                            System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
+                        }
+                    } while (!isValidDate(date6));
+
+
+                    methods.tempFunction(tempo1, tempo2, date5, date6);
                     break;
                 case 6:
                     salir = true;

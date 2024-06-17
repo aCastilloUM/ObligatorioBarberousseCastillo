@@ -116,7 +116,9 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             firstDate = LocalDate.parse(first, formatter);
             lastDate = LocalDate.parse(last, formatter);
             betweenDates.addFirst(firstDate);
-            betweenDates.addLast(lastDate);
+            if (!lastDate.isEqual(firstDate)) {
+                betweenDates.addLast(lastDate);
+            }
         } catch (DateTimeParseException e) {
             System.err.println("Fecha no válida");
         }
@@ -140,7 +142,10 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
 
         for (int i = 0; i < betweenDates.getSize(); i++) {
             for (int j =0 ; j < abbreviations.length ; j++){
-                String key = abbreviations[j].trim() + betweenDates.getValueNode(i).toString().trim();
+                StringBuilder sb = new StringBuilder();
+                sb.append(abbreviations[j].trim());
+                sb.append(betweenDates.getValueNode(i).toString().trim());
+                String key = sb.toString();
                 try { // Si no existe la fecha en el top global, se salta
                     LinkedList<String> top50 = file.getWorld().get(key);
                     for (int k = 0; k < 50; k++) {
@@ -216,13 +221,16 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         MyList<LocalDate> betweenDates = new LinkedList<>();
         LocalDate firstDate = null;
         LocalDate lastDate = null;
+        Integer counter = 0;
 
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             firstDate = LocalDate.parse(first, formatter);
             lastDate = LocalDate.parse(last, formatter);
             betweenDates.addFirst(firstDate);
-            betweenDates.addLast(lastDate);
+            if (!lastDate.isEqual(firstDate)){
+                betweenDates.addLast(lastDate);
+            }
         } catch (DateTimeParseException e) {
             System.err.println("Fecha no válida");
         }
@@ -234,12 +242,43 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             lastDate = temp;
         }
 
+        if(tempo1>=tempo2){
+            double temp = tempo1;
+            tempo1 = tempo2;
+            tempo2 = temp;
+        }
+
+
+
         for (int i = 0; i<this.dates.length; i++){
             LocalDate date = LocalDate.parse(this.dates[i]);
             if (isBetween(date, firstDate, lastDate)){
                 betweenDates.addLast(date);
             }
         }
+
+        for (int i = 0; i < betweenDates.getSize(); i++) {
+            for (int j =0 ; j < abbreviations.length ; j++){
+
+                StringBuilder sb = new StringBuilder();
+                sb.append(abbreviations[j].trim());
+                sb.append(betweenDates.getValueNode(i).toString().trim());
+                String key = sb.toString();
+                try { // Si no existe la fecha en el top global, se salta
+                    LinkedList<String> top50 = file.getWorld().get(key);
+                    for (int k = 0; k < 50; k++) {
+                        String songKey = top50.getValueNode(k);
+                        Song s = file.getSongs().get(songKey);
+                        if (s.getTempo() >= tempo1 && s.getTempo() <= tempo2){
+                            counter++;
+                        }
+                    }
+                } catch (NullPointerException | InvalidKeyException | EmptyHashException e) {
+                    System.out.println("Fecha no encontrada");
+                }
+            }
+        }
+        System.out.println("Cantidad de canciones con un tempo entre " + tempo1 + " y " + tempo2 + " en el rango de fechas seleccionado: " + counter);
     }
 
     // Metodo recursivo para mantener el orden O(n) en la funcion top5RepeatedSongs
