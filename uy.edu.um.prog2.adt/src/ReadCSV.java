@@ -17,6 +17,9 @@ public class ReadCSV {
     private String song;
     public String[] attributes;
 
+    //Sin StringBuilders 1:50
+    //Con Stringbuilder para crear Key 1:10
+
     public void uploadCSV(String filename) {
         try {
             String keyActual = "*** *";
@@ -48,7 +51,12 @@ public class ReadCSV {
                         songs.add(attributes[0], s);
                     }
 
-                    String hashkey = attributes[6].trim() + attributes[7].trim();
+                    // Usar StringBuilder para crear hashkey
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(attributes[6].trim());
+                    sb.append(attributes[7].trim());
+                    String hashkey = sb.toString();
+
                     if (hashkey.equals(keyActual)) {
                         this.world.get(hashkey).addLast(attributes[0]);
                     } else {
@@ -68,7 +76,12 @@ public class ReadCSV {
                         songs.add(attributes[0], s);
                     }
 
-                    String hashkey = attributes[6] + attributes[7];
+                    // Usar StringBuilder para crear hashkey
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(attributes[6]);
+                    sb.append(attributes[7]);
+                    String hashkey = sb.toString();
+
                     if (hashkey.equals(keyActual)) {
                         this.world.get(hashkey).addLast(attributes[0]);
                     } else {
@@ -87,7 +100,11 @@ public class ReadCSV {
 
                     }
 
-                    String hashkey = attributes[7] + attributes[8];
+                    // Usar StringBuilder para crear hashkey
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(attributes[7]);
+                    sb.append(attributes[8]);
+                    String hashkey = sb.toString();
 
                     if (hashkey.equals(keyActual)) {
                         this.world.get(hashkey).addLast(attributes[0]);
@@ -137,6 +154,4 @@ public class ReadCSV {
         // Parsea la cadena de fecha a LocalDate
         return LocalDate.parse(fechaFormateada, formatoEntrada);
     }
-
-
 }
