@@ -44,11 +44,11 @@ public class ReadCSV {
                         // Aquí modificas para seleccionar los atributos correctamente según tu archivo CSV
                         int daily_rank = Integer.parseInt(attributes[3]);
                         double tempo = Double.parseDouble(attributes[23]);
-                        Song s = new Song(attributes[0], attributes[1], attributes[2], daily_rank, tempo);
+                        Song s = new Song(attributes[0], attributes[1].trim(), attributes[2].trim(), daily_rank, tempo);
                         songs.add(attributes[0], s);
                     }
 
-                    String hashkey = attributes[6] + attributes[7];
+                    String hashkey = attributes[6].trim() + attributes[7].trim();
                     if (hashkey.equals(keyActual)) {
                         this.world.get(hashkey).addLast(attributes[0]);
                     } else {
@@ -64,7 +64,7 @@ public class ReadCSV {
                         // Aquí modificas para seleccionar los atributos correctamente según tu archivo CSV
                         int daily_rank = Integer.parseInt(attributes[3]);
                         double tempo = Double.parseDouble(attributes[23]);
-                        Song s = new Song(attributes[0], attributes[1], attributes[2], daily_rank, tempo);
+                        Song s = new Song(attributes[0], attributes[1], attributes[2].trim(), daily_rank, tempo);
                         songs.add(attributes[0], s);
                     }
 
@@ -82,7 +82,7 @@ public class ReadCSV {
                         // Aquí modificas para seleccionar los atributos correctamente según tu archivo CSV
                         int daily_rank = Integer.parseInt(attributes[4]);
                         double tempo = Double.parseDouble(attributes[24]);
-                        Song s = new Song(attributes[0], attributes[1], attributes[3], daily_rank, tempo);
+                        Song s = new Song(attributes[0], attributes[1], attributes[3].trim(), daily_rank, tempo);
                         songs.add(attributes[0], s);
 
                     }

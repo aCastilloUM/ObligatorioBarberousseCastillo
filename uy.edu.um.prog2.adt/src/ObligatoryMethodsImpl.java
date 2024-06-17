@@ -23,16 +23,18 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
     //"C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv"
     public ObligatoryMethodsImpl() {
         file = new ReadCSV();
-        file.uploadCSV("C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv");
+        file.uploadCSV("C:\\Users\\agust\\OneDrive\\Escritorio\\universal_top_spotify_songs.csv");
     }
 
-    //"C:\\Users\\agust\OneDrive\\Escritorio\\universal_top_spotify_songs.csv"
+    //"C:\Users\agust\OneDrive\Escritorio\/universal_top_spotify_songs.csv"
     @Override
     public void top10Song(String country, String date) throws EmptyHashException, InvalidKeyException {
-        System.out.println(file.getWorld().getSize());
-        System.out.println(file.getWorld().getFirstHash());
         String key = country + date;
         LinkedList<String> top50 = file.getWorld().get(key);
+        if (key.equals("GLB2024-05-13")) {
+            System.out.println("Fecha en top global no encontrada");
+            return;
+        }
         for (int i = 0; i < 10; i++) {
             String songKey = top50.getValueNode(i);
             Song s = file.getSongs().get(songKey);
@@ -83,14 +85,13 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                 String songKey = top5.get();
                 int appearances = songsAppearances.get(songKey); // Obtener el número de apariciones
                 System.out.println((i + 1) + " - " + file.getSongs().get(songKey).getName() + "    " + file.getSongs().get(songKey).getArtists() + " (" + appearances + ") apariciones");
-                top5.delete(i); // Elimina el elemento en el heap por clave
+                top5.delete(); // Elimina el elemento en el heap por clave
             }
         }
     }
 
 
-    public void top7Artist(String first, String last) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException {
-        MyList<LocalDate> dates = new LinkedList<>();
+    public void top7Artist(String first, String last) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException{
         MyList<LocalDate> betweenDates = new LinkedList<>();
         Heap<Integer, String> artist = new Heap<>();
         Hash<String, Integer> artistAppearances = new Hash<>(7);
@@ -103,41 +104,24 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             firstDate = LocalDate.parse(first, formatter);
             lastDate = LocalDate.parse(last, formatter);
+            betweenDates.addFirst(firstDate);
+            betweenDates.addLast(lastDate);
         } catch (DateTimeParseException e) {
             System.err.println("Fecha no válida");
         }
 
+
         if (firstDate.isAfter(lastDate)) {
-            System.err.println("La primera fecha es posterior a la última fecha.");
-            return;  // Termina el método si el rango de fechas no es válido
+            LocalDate temp = firstDate;
+            firstDate = lastDate;
+            lastDate = temp;
         }
 
-        System.out.println(file.getWorld().getTable().length);
-        //Recorremos la lista de canciones para obtener cada fecha
-        for (int i = 0; i < file.getWorld().getTable().length; i++) {
-            if (file.getWorld().getTable()[i] != null) {
-                if (file.getWorld().getTable()[i].getKey().length() == 12){
-                    String fecha = file.getWorld().getTable()[i].getKey().substring(2);
-                    LocalDate date = LocalDate.parse(fecha);
-                    if (!dates.contains(date)) {
-                        dates.addLast(date);
-                    }
-                }
+        for (int i = 0; i<this.dates.length; i++){
+            LocalDate date = LocalDate.parse(this.dates[i]);
+            if (isBetween(date, firstDate, lastDate)){
+                betweenDates.addLast(date);
             }
-        }
-        /*
-        for (int i = 0; i < dates.getSize(); i++) {
-            System.out.println(dates.getValueNode(i));
-        }
-         */
-        for (int i = 0; i < dates.getSize(); i++) {
-            LocalDate currentDate = dates.getValueNode(i);
-            System.out.println("Sos gil");
-            System.out.println("Current Date: " + currentDate);
-            if (isBetween(currentDate, firstDate, lastDate)) {
-                betweenDates.addLast(currentDate);
-            }
-            System.out.println("BetweenDates Size: " + betweenDates.getSize());
         }
 
         //Combinamos cada fecha con cada pais, accedemos a la lista, accedemos en cada cancion al otro hash
@@ -145,25 +129,28 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
 
         for (int i = 0; i < betweenDates.getSize(); i++) {
             for (int j =0 ; j < abbreviations.length ; j++){
-                String key = abbreviations[j] + betweenDates.getValueNode(i);
-                LinkedList<String> top50 = file.getWorld().get(key);
-                for (int k = 0; k < 50; k++) {
-                    String songKey = top50.getValueNode(k);
+                String key = abbreviations[j].trim() + betweenDates.getValueNode(i).toString().trim();
+                System.out.println(key);
+                try { // Si no existe la fecha en el top global, se salta
+                    LinkedList<String> top50 = file.getWorld().get(key);
+                    for (int k = 0; k < 50; k++) {
+                        String songKey = top50.getValueNode(k);
 
-                    String artstListS = file.getSongs().get(songKey).artists;
-                    System.out.println(artstListS);
-                    String[] artistList = artstListS.split(",");
+                        String artstListS = file.getSongs().get(songKey).artists;
+                        String[] artistList = artstListS.split(",");
 
-                    for (int z = 0; z < artistList.length; z++){
-                        if (!artistAppearances.contains(artistList[z])) {
-                            System.out.println(artistAppearances.getSize());
-                            artistAppearances.add(artistList[z], 1);
-                        } else {
-                            Integer appearances = artistAppearances.get(artistList[z]);
-                            appearances++;
-                            artistAppearances.add(artistList[z], appearances);
+                        for (int z = 0; z < artistList.length; z++) {
+                            if (!artistAppearances.contains(artistList[z].trim())) {
+                                artistAppearances.add(artistList[z].trim(), 1);
+                            } else {
+                                Integer appearances = artistAppearances.get(artistList[z].trim());
+                                appearances++;
+                                artistAppearances.add(artistList[z].trim(), appearances);
+                            }
                         }
                     }
+                } catch (NullPointerException | InvalidKeyException e) {
+                    System.out.println("Fecha no encontrada");
                 }
             }
         }
@@ -173,9 +160,45 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             }
         }
         System.out.println(artist.getSize());
-        for (int i = 0; i < 8; i++) {
-            System.out.println((i+1) + " - " + artist.get());
-            artist.delete(i);
+        for (int i = 0; i < 7; i++) {
+            String artistKey = artist.get();
+            int appearances = artistAppearances.get(artistKey); // Obtener el número de apariciones
+            System.out.println((i + 1) + " - " + artistKey + "    " + " (" + appearances + ") apariciones");
+            artist.delete();
+        }
+
+    }
+
+    public void artistAppearances(String artistName, String country, String date) throws EmptyHashException, InvalidKeyException {
+
+    }
+    public void tempFunction(double tempo1, double tempo2, String first, String last){
+        MyList<LocalDate> betweenDates = new LinkedList<>();
+        LocalDate firstDate = null;
+        LocalDate lastDate = null;
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            firstDate = LocalDate.parse(first, formatter);
+            lastDate = LocalDate.parse(last, formatter);
+            betweenDates.addFirst(firstDate);
+            betweenDates.addLast(lastDate);
+        } catch (DateTimeParseException e) {
+            System.err.println("Fecha no válida");
+        }
+
+
+        if (firstDate.isAfter(lastDate)) {
+            LocalDate temp = firstDate;
+            firstDate = lastDate;
+            lastDate = temp;
+        }
+
+        for (int i = 0; i<this.dates.length; i++){
+            LocalDate date = LocalDate.parse(this.dates[i]);
+            if (isBetween(date, firstDate, lastDate)){
+                betweenDates.addLast(date);
+            }
         }
     }
     public void enlazarNodosRecursivo (ListNode < String > a, ListNode < String > b){
@@ -188,10 +211,6 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
     }
 
     public boolean isBetween(LocalDate date, LocalDate first, LocalDate last) {
-        if (!date.isBefore(first)  && !date.isAfter(last)){
-            System.out.println("Casti PUL");
-        }
-
         return !date.isBefore(first) && !date.isAfter(last);
     }
 
@@ -200,6 +219,9 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             "EC", "DO", "DK", "DE", "CZ", "CR", "CO", "CL", "CH", "CA", "BY", "BR", "BO",
             "BG", "BE", "AU", "AT", "AR", "AE"};
 
+    String[] abbreviations24 =  { "VN", "UY", "UA", "TW", "TR", "TH", "SV", "SK", "SG", "SE", "RO", "PY", "PT", "PL", "PK", "PH", "PE", "PA",
+            "NI", "NG", "MY", "MX", "MA", "LV", "KZ", "KR", "JP", "IT","IL", "ID", "HU", "HN", "HK", "GT", "GR", "FR", "FI", "ES", "EG", "EE",
+            "DO", "DE", "CZ", "CR","CL", "BY", "BR", "BO", "BE", "AT", "AR", "AE"};
     String[] dates = {
             "2024-05-13", "2024-05-12", "2024-05-11", "2024-05-10", "2024-05-09", "2024-05-08", "2024-05-07", "2024-05-06",
             "2024-05-05", "2024-05-04", "2024-05-03", "2024-05-02", "2024-05-01", "2024-04-30", "2024-04-29", "2024-04-28",
@@ -226,8 +248,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             "2023-11-16", "2023-11-15", "2023-11-14", "2023-11-13", "2023-11-12", "2023-11-11", "2023-11-10", "2023-11-09",
             "2023-11-08", "2023-11-07", "2023-11-06", "2023-11-05", "2023-11-04", "2023-11-03", "2023-11-02", "2023-11-01",
             "2023-10-31", "2023-10-30", "2023-10-29", "2023-10-28", "2023-10-27", "2023-10-26", "2023-10-25", "2023-10-24",
-            "2023-10-23", "2023-10-22", "2023-10-21", "2023-10-20", "2023-10-19", "2023-10-18"
-            };
+            "2023-10-23", "2023-10-22", "2023-10-21", "2023-10-20", "2023-10-19", "2023-10-18"};
 
     /* Fechas que no estan
             2024-03-17

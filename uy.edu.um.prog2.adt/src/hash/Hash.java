@@ -88,6 +88,8 @@ public class Hash<K,V> implements MyHash<K,V> {
         capacity = newCapacity;
     }
 
+
+    @Override
     public void add(K key, V value) {
         // Si la cantidad de elementos de la tabla es mayor al 75% de la capacidad, agrandamos el Hash
         if (size >= capacity * 0.75) {

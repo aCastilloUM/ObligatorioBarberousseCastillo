@@ -27,7 +27,7 @@ public class Heap<K,T> implements MyHeap<K,T>{
     public ArrayList<HeapNode<K, T>> getTable() {
         return table;
     }
-
+    @Override
     public void add(K key, T data){
         HeapNode<K, T> newNode = new HeapNode<>(key, data);
         table.add(newNode);
@@ -52,7 +52,7 @@ public class Heap<K,T> implements MyHeap<K,T>{
             }
         }
     }
-
+    @Override
     public T get() throws exceptions.InvalidKeyException.EmptyHeapException {
         if (table.isEmpty()) {
             throw new exceptions.InvalidKeyException.EmptyHeapException();
@@ -63,31 +63,20 @@ public class Heap<K,T> implements MyHeap<K,T>{
     }
 
 
-    public void delete (K key) throws exceptions.InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException {
+
+    //Este metodo delete, quiero que no reciba Key por parametro sino que borrre la root
+    @Override
+    public void delete ()throws exceptions.InvalidKeyException.EmptyHeapException {
         if (table.isEmpty()) {
             throw new exceptions.InvalidKeyException.EmptyHeapException();
         }
 
-        // Buscamos el elemento en el heap
-        int indexToDelete = -1;
-        for (int i = 0; i < table.size(); i++) {
-            if (table.get(i).getKey().equals(key)) {
-                indexToDelete = i;
-                break;
-            }
-        }
+        // Reemplazo la raíz con el último nodo
+        table.set(0, table.get(table.size() - 1));
+        table.remove(table.size() - 1);
 
-        if (indexToDelete == -1) {
-            throw new EmptyStackException.InvalidKeyException();
-        }
-
-        // Cambiamos el elemento a eliminar con el ultimo del heap
-        int lastIndex = table.size() - 1;
-        table.set(indexToDelete, table.get(lastIndex));
-        table.remove(lastIndex);
-
-        // Acomodamos el heap
-        heapifyDown(indexToDelete);
+        // Heapify hacia abajo
+        heapifyDown(0);
     }
 
     private void heapifyDown(int index) {
@@ -119,7 +108,7 @@ public class Heap<K,T> implements MyHeap<K,T>{
             }
         }
     }
-
+    @Override
     public boolean contains (K key){
         boolean exist = false;
         for (int i =0 ; i < this.table.size(); i++){
