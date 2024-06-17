@@ -24,16 +24,32 @@ public class Main {
         System.out.println();
 
         while (!salir) {
-            System.out.println("Ingrese el numero de consulta que desea realizar: ");
-            System.out.println("1. Top 10 canciones en un país y una fecha dada.");
-            System.out.println("2. Top 5 canciones que aparecen en más top 50 en un día dado.");
-            System.out.println("3. Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.");
-            System.out.println("4. Cantidad de veces que aparece un artista específico en un top 50 en una fecha dada.");
-            System.out.println("5. Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.");
-            System.out.println("6. Salir.");
+            int option = -1;
+            boolean validOption = false;
 
-            int option = scanner.nextInt();
-            scanner.nextLine(); // Agrega esta línea
+            while (!validOption) {
+                System.out.println("Ingrese el numero de consulta que desea realizar: ");
+                System.out.println("1. Top 10 canciones en un país y una fecha dada.");
+                System.out.println("2. Top 5 canciones que aparecen en más top 50 en un día dado.");
+                System.out.println("3. Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.");
+                System.out.println("4. Cantidad de veces que aparece un artista específico en un top 50 en una fecha dada.");
+                System.out.println("5. Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.");
+                System.out.println("6. Salir.");
+
+                if (scanner.hasNextInt()) {
+                    option = scanner.nextInt();
+                    if (option >= 1 && option <= 6) {
+                        validOption = true;
+                    } else {
+                        System.out.println("Opción no válida. Por favor, ingrese un número del 1 al 6.");
+                    }
+                } else {
+                    System.out.println("Entrada no válida. Por favor, ingrese un número del 1 al 6.");
+                    scanner.next(); // Consume la entrada no válida
+                }
+            }
+
+            scanner.nextLine(); // Agrega esta línea para consumir el salto de línea
 
             switch (option) {
                 case 1:
@@ -73,7 +89,7 @@ public class Main {
                     System.out.println("Ha seleccionado la consulta 3.");
                     String first;
                     do {
-                        System.out.println("Ingrese el día más cercano a la actualidad en formato yyyy-MM-DD: ");
+                        System.out.println("Ingrese un dia en formato yyyy-MM-DD: ");
                         first = scanner.next();
                         if (!isValidDate(first)) {
                             System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
@@ -81,7 +97,7 @@ public class Main {
                     } while (!isValidDate(first));
                     String last;
                     do {
-                        System.out.println("Ingrese el otro día en formato yyyy-MM-DD: ");
+                        System.out.println("Ingrese otro día en formato yyyy-MM-DD: ");
                         last = scanner.next();
                         if (!isValidDate(last)) {
                             System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
@@ -89,8 +105,6 @@ public class Main {
                     } while (!isValidDate(last));
                     System.out.println("Top 7 artistas: ");
                     methods.top7Artist(first, last);
-
-
                     break;
                 case 4:
                     System.out.println("Ha seleccionado la consulta 4.");
@@ -112,7 +126,7 @@ public class Main {
                             System.out.println("País no válido. Por favor, ingrese una abreviatura válida.");
                         }
                     } while (!isValidCountry(country2));
-                    methods.artistAppearances(artistName.trim(),country2.trim(), date4.trim());
+                    methods.artistAppearances(artistName.trim(), country2.trim(), date4.trim());
                     break;
                 case 5:
                     System.out.println("Ha seleccionado la consulta 5.");
@@ -123,7 +137,7 @@ public class Main {
                     System.out.println("Ha seleccionado salir. ¡Hasta luego!");
                     break;
                 default:
-                    System.out.println("Opción no válida. Por favor, ingrese un número del 1 al 6.");
+                    // Este caso nunca se alcanzará porque hemos validado la entrada
                     break;
             }
 

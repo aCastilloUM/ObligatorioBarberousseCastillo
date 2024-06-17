@@ -29,68 +29,79 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
     //"C:\Users\agust\OneDrive\Escritorio\/universal_top_spotify_songs.csv"
     @Override
     public void top10Song(String country, String date) throws EmptyHashException, InvalidKeyException {
-        String key = country + date;
-        LinkedList<String> top50 = file.getWorld().get(key);
-        if (key.equals("GLB2024-05-13")) {
-            System.out.println("Fecha en top global no encontrada");
-            return;
-        }
-        for (int i = 0; i < 10; i++) {
-            String songKey = top50.getValueNode(i);
-            Song s = file.getSongs().get(songKey);
-            System.out.println((i + 1) + " - " + s.getName() + "    " + s.getArtists());
+        try {
+            String key = country + date;
+            LinkedList<String> top50 = file.getWorld().get(key);
+            /*
+            if (key.equals("GLB2024-05-13")) {
+                System.out.println("Fecha en top global no encontrada");
+                return;
+            }
+             */
+            for (int i = 0; i < 10; i++) {
+                String songKey = top50.getValueNode(i);
+                Song s = file.getSongs().get(songKey);
+                System.out.println((i + 1) + " - " + s.getName() + "    " + s.getArtists());
+            }
+        } catch (NullPointerException | InvalidKeyException e){
+            System.out.println("Fecha no disponible");
         }
     }
 
     LinkedList<ListNode<String>> dateSongs = new LinkedList<>();
 
+    @Override
     public void top5RepeatedSongs(String date) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException {
         int counter = 0;
         Hash<String, Integer> songsAppearances = new Hash<>(5);
         Heap<Integer, String> top5 = new Heap<>();
 
-        for (int i = 0; i < abbreviations.length; i++) {
-            String key = abbreviations[i] + date;
-            LinkedList<String> top50 = file.getWorld().get(key);
-            if (counter == 0) {
-                dateSongs.addFirst(top50.getHead());
-                enlazarNodosRecursivo(dateSongs.getHead().getValue(), top50.getHead().getNext());
-            } else {
-                enlazarNodosRecursivo(dateSongs.getLast().getValue(), top50.getHead());
+        try {
+            for (int i = 0; i < abbreviations.length; i++) {
+                String key = abbreviations[i] + date;
+                LinkedList<String> top50 = file.getWorld().get(key);
+                if (counter == 0) {
+                    dateSongs.addFirst(top50.getHead());
+                    enlazarNodosRecursivo(dateSongs.getHead().getValue(), top50.getHead().getNext());
+                } else {
+                    enlazarNodosRecursivo(dateSongs.getLast().getValue(), top50.getHead());
+                }
+                counter++;
             }
-            counter++;
-        }
 
-        for (int i = 0; i < dateSongs.getSize(); i++) {
-            String key = dateSongs.getValueNode(i).getValue().trim();
+            for (int i = 0; i < dateSongs.getSize(); i++) {
+                String key = dateSongs.getValueNode(i).getValue().trim();
 
-            if (!songsAppearances.contains(key)) {
-                songsAppearances.add(key, 1);
-            } else {
-                Integer appearances = songsAppearances.get(key);
-                appearances++;
-                songsAppearances.add(key, appearances);
+                if (!songsAppearances.contains(key)) {
+                    songsAppearances.add(key, 1);
+                } else {
+                    Integer appearances = songsAppearances.get(key);
+                    appearances++;
+                    songsAppearances.add(key, appearances);
+                }
             }
-        }
 
-        for (int i = 0; i < songsAppearances.getTable().length; i++) {
-            if (songsAppearances.getTable()[i] != null) {
-                top5.add(songsAppearances.getTable()[i].getValue(), songsAppearances.getTable()[i].getKey());
+            for (int i = 0; i < songsAppearances.getTable().length; i++) {
+                if (songsAppearances.getTable()[i] != null) {
+                    top5.add(songsAppearances.getTable()[i].getValue(), songsAppearances.getTable()[i].getKey());
+                }
             }
-        }
 
-        System.out.println("Top 5 canciones en " + date);
-        for (int i = 0; i < 5; i++) {
-            if (top5.getSize() > 0) { // Asegúrate de que hay elementos en el heap antes de intentar obtener y eliminar
-                String songKey = top5.get();
-                int appearances = songsAppearances.get(songKey); // Obtener el número de apariciones
-                System.out.println((i + 1) + " - " + file.getSongs().get(songKey).getName() + "    " + file.getSongs().get(songKey).getArtists() + " (" + appearances + ") apariciones");
-                top5.delete(); // Elimina el elemento en el heap por clave
+            System.out.println("Top 5 canciones en " + date);
+            for (int i = 0; i < 5; i++) {
+                if (top5.getSize() > 0) { // Asegúrate de que hay elementos en el heap antes de intentar obtener y eliminar
+                    String songKey = top5.get();
+                    int appearances = songsAppearances.get(songKey); // Obtener el número de apariciones
+                    System.out.println((i + 1) + " - " + file.getSongs().get(songKey).getName() + "    " + file.getSongs().get(songKey).getArtists() + " (" + appearances + ") apariciones");
+                    top5.delete(); // Elimina el elemento en el heap por clave
+                }
             }
+        } catch (InvalidKeyException | NullPointerException e){
+            System.out.println("Error: No se pudo procesar las canciones para la fecha especificada. ");
         }
     }
 
-
+    @Override
     public void top7Artist(String first, String last) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException{
         MyList<LocalDate> betweenDates = new LinkedList<>();
         Heap<Integer, String> artist = new Heap<>();
@@ -130,7 +141,6 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         for (int i = 0; i < betweenDates.getSize(); i++) {
             for (int j =0 ; j < abbreviations.length ; j++){
                 String key = abbreviations[j].trim() + betweenDates.getValueNode(i).toString().trim();
-                System.out.println(key);
                 try { // Si no existe la fecha en el top global, se salta
                     LinkedList<String> top50 = file.getWorld().get(key);
                     for (int k = 0; k < 50; k++) {
@@ -159,7 +169,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                 artist.add(artistAppearances.getTable()[i].getValue(), artistAppearances.getTable()[i].getKey());
             }
         }
-        //System.out.println(artist.getSize());
+
         for (int i = 0; i < 7; i++) {
             String artistKey = artist.get();
             int appearances = artistAppearances.get(artistKey); // Obtener el número de apariciones
@@ -169,6 +179,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
 
     }
 
+    @Override
     public void artistAppearances(String artistName, String country, String date) throws EmptyHashException, InvalidKeyException {
         Hash<String, Integer> artistAppearances = new Hash<>(1);
         artistAppearances.add(artistName, 0);
@@ -200,6 +211,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         System.out.println("La cantidad de apariciones de "+ artistName + " en " + country + " el día " + date + " es de " + artistAppearances.get(artistName) + " veces.");
     }
 
+    @Override
     public void tempFunction(double tempo1, double tempo2, String first, String last){
         MyList<LocalDate> betweenDates = new LinkedList<>();
         LocalDate firstDate = null;
@@ -230,6 +242,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         }
     }
 
+    // Metodo recursivo para mantener el orden O(n) en la funcion top5RepeatedSongs
     public void enlazarNodosRecursivo (ListNode < String > a, ListNode < String > b){
         if (b == null) // Verificar si b o su siguiente nodo son nulos
             return;
@@ -239,6 +252,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         enlazarNodosRecursivo(b, b.getNext());
     }
 
+    // Metodo para chequear un rango de fechas
     public boolean isBetween(LocalDate date, LocalDate first, LocalDate last) {
         return !date.isBefore(first) && !date.isAfter(last);
     }
@@ -251,6 +265,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
     String[] abbreviations24 =  { "VN", "UY", "UA", "TW", "TR", "TH", "SV", "SK", "SG", "SE", "RO", "PY", "PT", "PL", "PK", "PH", "PE", "PA",
             "NI", "NG", "MY", "MX", "MA", "LV", "KZ", "KR", "JP", "IT","IL", "ID", "HU", "HN", "HK", "GT", "GR", "FR", "FI", "ES", "EG", "EE",
             "DO", "DE", "CZ", "CR","CL", "BY", "BR", "BO", "BE", "AT", "AR", "AE"};
+
     String[] dates = {
             "2024-05-13", "2024-05-12", "2024-05-11", "2024-05-10", "2024-05-09", "2024-05-08", "2024-05-07", "2024-05-06",
             "2024-05-05", "2024-05-04", "2024-05-03", "2024-05-02", "2024-05-01", "2024-04-30", "2024-04-29", "2024-04-28",
