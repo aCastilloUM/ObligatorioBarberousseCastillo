@@ -23,7 +23,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
     //"C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv"
     public ObligatoryMethodsImpl() {
         file = new ReadCSV();
-        file.uploadCSV("C:\\Users\\agust\\OneDrive\\Escritorio\\universal_top_spotify_songs.csv");
+        file.uploadCSV("C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv");
     }
 
     //"C:\Users\agust\OneDrive\Escritorio\/universal_top_spotify_songs.csv"
@@ -159,19 +159,47 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                 artist.add(artistAppearances.getTable()[i].getValue(), artistAppearances.getTable()[i].getKey());
             }
         }
-        System.out.println(artist.getSize());
+        //System.out.println(artist.getSize());
         for (int i = 0; i < 7; i++) {
             String artistKey = artist.get();
             int appearances = artistAppearances.get(artistKey); // Obtener el número de apariciones
-            System.out.println((i + 1) + " - " + artistKey + "    " + " (" + appearances + ") apariciones");
+            System.out.println((i + 1) + " - " + artistKey + "  " + " (" + appearances + ") apariciones");
             artist.delete();
         }
 
     }
 
     public void artistAppearances(String artistName, String country, String date) throws EmptyHashException, InvalidKeyException {
+        Hash<String, Integer> artistAppearances = new Hash<>(1);
+        artistAppearances.add(artistName, 0);
+        LocalDate localDate = null;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            localDate = LocalDate.parse(date, formatter);
+        } catch (DateTimeParseException e) {
+            System.err.println("Fecha no válida");
+        }
+        String key = country + date;
 
+        LinkedList<String> top50 = file.getWorld().get(key);
+
+        for (int i = 0; i < 50; i++) {
+            String songKey = top50.getValueNode(i);
+            Song s = file.getSongs().get(songKey);
+            String[] artists = s.getArtists().split(",");
+            for (int j = 0; j < artists.length; j++) {
+                if (artists[j].trim().equals(artistName)) {
+                    if (artistAppearances.contains(artistName)) {
+                        Integer appearances = artistAppearances.get(artistName);
+                        appearances++;
+                        artistAppearances.add(artistName, appearances);
+                    }
+                }
+            }
+        }
+        System.out.println("La cantidad de apariciones de "+ artistName + " en " + country + " el día " + date + " es de " + artistAppearances.get(artistName) + " veces.");
     }
+
     public void tempFunction(double tempo1, double tempo2, String first, String last){
         MyList<LocalDate> betweenDates = new LinkedList<>();
         LocalDate firstDate = null;
@@ -201,6 +229,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             }
         }
     }
+
     public void enlazarNodosRecursivo (ListNode < String > a, ListNode < String > b){
         if (b == null) // Verificar si b o su siguiente nodo son nulos
             return;

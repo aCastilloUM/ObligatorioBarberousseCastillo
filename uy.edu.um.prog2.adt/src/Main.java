@@ -73,7 +73,7 @@ public class Main {
                     System.out.println("Ha seleccionado la consulta 3.");
                     String first;
                     do {
-                        System.out.println("Ingrese un día en formato yyyy-MM-DD: ");
+                        System.out.println("Ingrese el día más cercano a la actualidad en formato yyyy-MM-DD: ");
                         first = scanner.next();
                         if (!isValidDate(first)) {
                             System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
@@ -81,7 +81,7 @@ public class Main {
                     } while (!isValidDate(first));
                     String last;
                     do {
-                        System.out.println("Ingrese un día en formato yyyy-MM-DD: ");
+                        System.out.println("Ingrese el otro día en formato yyyy-MM-DD: ");
                         last = scanner.next();
                         if (!isValidDate(last)) {
                             System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
