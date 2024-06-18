@@ -17,9 +17,6 @@ public class ReadCSV {
     private String song;
     private String[] attributes;
 
-    //Sin StringBuilders 1:50
-    //Con Stringbuilder para crear Key 1:10
-
     public void uploadCSV(String filename) {
         try {
             String keyActual = "*** *";

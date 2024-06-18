@@ -129,15 +129,8 @@ public class Main {
                             System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
                         }
                     } while (!isValidDate(date4));
-                    String country2;
-                    do {
-                        System.out.println("Ingrese un país (abreviatura): ");
-                        country2 = scanner.next();
-                        if (!isValidCountry(country2)) {
-                            System.out.println("País no válido. Por favor, ingrese una abreviatura válida.");
-                        }
-                    } while (!isValidCountry(country2));
-                    methods.artistAppearances(artistName.trim(), country2.trim(), date4.trim());
+
+                    methods.artistAppearances(artistName.trim(), date4.trim());
                     break;
                 case 5:
                     System.out.println("Ha seleccionado la consulta 5.");

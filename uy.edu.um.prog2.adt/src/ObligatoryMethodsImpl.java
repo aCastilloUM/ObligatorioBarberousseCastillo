@@ -179,35 +179,38 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
     }
 
     @Override
-    public void artistAppearances(String artistName, String country, String date) throws EmptyHashException, InvalidKeyException {
+    public void artistAppearances(String artistName, String date) throws EmptyHashException, InvalidKeyException {
         Hash<String, Integer> artistAppearances = new Hash<>(1);
         artistAppearances.add(artistName, 0);
         LocalDate localDate = null;
         System.out.println();
-        System.out.println("TOP 7 ARTISTAS QUE MÁS APARECIERON: ");
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             localDate = LocalDate.parse(date, formatter);
         } catch (DateTimeParseException e) {}
-        String key = country + date;
 
-        LinkedList<String> top50 = file.getWorld().get(key);
+        try {
+            for (int z = 0; z < abbreviations.length; z++) {
+                String key =abbreviations[z] + date;
 
-        for (int i = 0; i < 50; i++) {
-            String songKey = top50.getValueNode(i);
-            Song s = file.getSongs().get(songKey);
-            String[] artists = s.getArtists().split(",");
-            for (int j = 0; j < artists.length; j++) {
-                if (artists[j].trim().equals(artistName)) {
-                    if (artistAppearances.contains(artistName)) {
-                        Integer appearances = artistAppearances.get(artistName);
-                        appearances++;
-                        artistAppearances.add(artistName, appearances);
+                LinkedList<String> top50 = file.getWorld().get(key);
+                for (int i = 0; i < 50; i++) {
+                    String songKey = top50.getValueNode(i);
+                    Song s = file.getSongs().get(songKey);
+                    String[] artists = s.getArtists().split(",");
+                    for (int j = 0; j < artists.length; j++) {
+                        if (artists[j].trim().equals(artistName)) {
+                            if (artistAppearances.contains(artistName)) {
+                                Integer appearances = artistAppearances.get(artistName);
+                                appearances++;
+                                artistAppearances.add(artistName, appearances);
+                            }
+                        }
                     }
                 }
             }
-        }
-        System.out.println("La cantidad de apariciones de "+ artistName + " en " + country + " el día " + date + " es de " + artistAppearances.get(artistName) + " aparicion (es).");
+        }catch (InvalidKeyException e){}
+        System.out.println("La cantidad de apariciones de "+ artistName +  "el día " + date + " es de " + artistAppearances.get(artistName) + " aparicion (es).");
     }
 
     @Override
