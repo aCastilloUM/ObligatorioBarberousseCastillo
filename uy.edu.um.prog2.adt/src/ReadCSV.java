@@ -15,7 +15,7 @@ public class ReadCSV {
     private Hash<String, Song> songs = new Hash<>(5);
     public BufferedReader reader;
     private String song;
-    public String[] attributes;
+    private String[] attributes;
 
     //Sin StringBuilders 1:50
     //Con Stringbuilder para crear Key 1:10
