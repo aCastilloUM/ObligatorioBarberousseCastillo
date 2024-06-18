@@ -13,7 +13,6 @@ public class Main {
             "BG", "BE", "AU", "AT", "AR", "AE"};
 
     public static void main(String[] args) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException {
-        ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl();
 
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
@@ -22,6 +21,19 @@ public class Main {
         System.out.println();
         System.out.println("Bienvenido al consultor! ");
         System.out.println();
+
+        // Paths de nuestras computadoras
+        //"C:\\Users\\agust\\OneDrive\\Escritorio\\universal_top_spotify_songs.csv"
+        //"C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv"
+
+        System.out.println("Ingrese el path del archivo CSV en su computadora (entre comillas si desea): ");
+        String csvPath = scanner.nextLine();
+
+        // Eliminar comillas solo si están presentes
+        if (csvPath.startsWith("\"") && csvPath.endsWith("\"")) {
+            csvPath = csvPath.substring(1, csvPath.length() - 1);
+        }
+        ObligatoryMethodsImpl methods = new ObligatoryMethodsImpl(csvPath);
 
         while (!salir) {
             int option = -1;
@@ -49,7 +61,7 @@ public class Main {
                 }
             }
 
-            scanner.nextLine(); // Agrega esta línea para consumir el salto de línea
+            scanner.nextLine(); // Consumir el salto de línea
 
             switch (option) {
                 case 1:
@@ -103,7 +115,6 @@ public class Main {
                             System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
                         }
                     } while (!isValidDate(last));
-                    System.out.println("Top 7 artistas: ");
                     methods.top7Artist(first, last);
                     break;
                 case 4:
@@ -133,17 +144,19 @@ public class Main {
                     double tempo1;
                     do {
                         System.out.println("Ingrese el tempo mínimo: ");
-                        tempo1 = scanner.nextDouble();
+                        String input = scanner.next();
+                        tempo1 = parseTempo(input);
                         if (tempo1 < 0) {
-                            System.out.println("El tempo no puede ser negativo. Por favor, ingrese un valor válido.");
+                            System.out.println("El tempo no puede ser negativo o tener un formato incorrecto. Por favor, ingrese un valor válido (utilizando coma).");
                         }
                     } while (tempo1 < 0);
                     double tempo2;
                     do {
                         System.out.println("Ingrese el tempo máximo: ");
-                        tempo2 = scanner.nextDouble();
+                        String input = scanner.next();
+                        tempo2 = parseTempo(input);
                         if (tempo2 < 0) {
-                            System.out.println("El tempo no puede ser negativo. Por favor, ingrese un valor válido.");
+                            System.out.println("El tempo no puede ser negativo o tener un formato incorrecto. Por favor, ingrese un valor válido.");
                         }
                     } while (tempo2 < 0);
 
@@ -163,7 +176,6 @@ public class Main {
                             System.out.println("Formato de fecha incorrecto. Por favor, ingrese en el formato especificado.");
                         }
                     } while (!isValidDate(date6));
-
 
                     methods.tempFunction(tempo1, tempo2, date5, date6);
                     break;
@@ -206,5 +218,17 @@ public class Main {
     // Método para verificar si la fecha ingresada es válida en el formato especificado
     private static boolean isValidDate(String date) {
         return date.matches("\\d{4}-\\d{2}-\\d{2}");
+    }
+
+    // Método para convertir el input de tempo a double, solo aceptando comas o nada
+    private static double parseTempo(String input) {
+        try {
+            if (input.contains(".")) {
+                return -1; // Indicador de formato incorrecto
+            }
+            return Double.parseDouble(input.replace(",", "."));
+        } catch (NumberFormatException e) {
+            return -1; // Indicador de formato incorrecto
+        }
     }
 }

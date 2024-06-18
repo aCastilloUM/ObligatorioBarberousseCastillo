@@ -10,6 +10,7 @@ import org.w3c.dom.NodeList;
 
 import java.io.FilterOutputStream;
 import java.security.Key;
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,29 +20,22 @@ import java.util.List;
 public class ObligatoryMethodsImpl implements ObligatoryMethods {
     ReadCSV file;
 
-    //"C:\\Users\\agust\\OneDrive\\Escritorio\\universal_top_spotify_songs.csv"
-    //"C:\\Users\\Lu\\Documents\\UM2024\\Programacion II\\universal_top_spotify_songs.csv"
-    public ObligatoryMethodsImpl() {
+    public ObligatoryMethodsImpl(String csvPath) {
         file = new ReadCSV();
-        file.uploadCSV("C:\\Users\\agust\\OneDrive\\Escritorio\\universal_top_spotify_songs.csv");
+        file.uploadCSV(csvPath);
     }
 
-    //"C:\Users\agust\OneDrive\Escritorio\/universal_top_spotify_songs.csv"
     @Override
     public void top10Song(String country, String date) throws EmptyHashException, InvalidKeyException {
+        System.out.println();
+        System.out.println("TOP 10 CANCIONES EN LA FECHA " + date);
         try {
             String key = country + date;
             LinkedList<String> top50 = file.getWorld().get(key);
-            /*
-            if (key.equals("GLB2024-05-13")) {
-                System.out.println("Fecha en top global no encontrada");
-                return;
-            }
-             */
             for (int i = 0; i < 10; i++) {
                 String songKey = top50.getValueNode(i);
                 Song s = file.getSongs().get(songKey);
-                System.out.println((i + 1) + " - " + s.getName() + "    " + s.getArtists());
+                System.out.println((i + 1) + " - " + s.getName() + " | " + s.getArtists());
             }
         } catch (NullPointerException | InvalidKeyException e){
             System.out.println("Fecha no disponible");
@@ -87,12 +81,13 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                 }
             }
 
-            System.out.println("Top 5 canciones en " + date);
+            System.out.println();
+            System.out.println("TOP 5 CANCIONES EN " + date);
             for (int i = 0; i < 5; i++) {
                 if (top5.getSize() > 0) { // Asegúrate de que hay elementos en el heap antes de intentar obtener y eliminar
                     String songKey = top5.get();
                     int appearances = songsAppearances.get(songKey); // Obtener el número de apariciones
-                    System.out.println((i + 1) + " - " + file.getSongs().get(songKey).getName() + "    " + file.getSongs().get(songKey).getArtists() + " (" + appearances + ") apariciones");
+                    System.out.println((i + 1) + " - " + file.getSongs().get(songKey).getName() + " | " + file.getSongs().get(songKey).getArtists() + " | (" + appearances + ") apariciones");
                     top5.delete(); // Elimina el elemento en el heap por clave
                 }
             }
@@ -120,7 +115,6 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                 betweenDates.addLast(lastDate);
             }
         } catch (DateTimeParseException e) {
-            System.err.println("Fecha no válida");
         }
 
 
@@ -164,9 +158,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                             }
                         }
                     }
-                } catch (NullPointerException | InvalidKeyException e) {
-                    System.out.println("Fecha no encontrada");
-                }
+                } catch (NullPointerException | InvalidKeyException e) {}
             }
         }
         for (int i = 0; i < artistAppearances.getTable().length; i++) {
@@ -175,10 +167,12 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             }
         }
 
+        System.out.println();
+        System.out.println("TOP 7 ARTISTAS CON MÁS APARICIONES EN EL RANGO " + first + " - " + last);
         for (int i = 0; i < 7; i++) {
             String artistKey = artist.get();
             int appearances = artistAppearances.get(artistKey); // Obtener el número de apariciones
-            System.out.println((i + 1) + " - " + artistKey + "  " + " (" + appearances + ") apariciones");
+            System.out.println((i + 1) + " - " + artistKey + " | (" + appearances + ") apariciones");
             artist.delete();
         }
 
@@ -189,12 +183,12 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         Hash<String, Integer> artistAppearances = new Hash<>(1);
         artistAppearances.add(artistName, 0);
         LocalDate localDate = null;
+        System.out.println();
+        System.out.println("TOP 7 ARTISTAS QUE MÁS APARECIERON: ");
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             localDate = LocalDate.parse(date, formatter);
-        } catch (DateTimeParseException e) {
-            System.err.println("Fecha no válida");
-        }
+        } catch (DateTimeParseException e) {}
         String key = country + date;
 
         LinkedList<String> top50 = file.getWorld().get(key);
@@ -213,7 +207,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                 }
             }
         }
-        System.out.println("La cantidad de apariciones de "+ artistName + " en " + country + " el día " + date + " es de " + artistAppearances.get(artistName) + " veces.");
+        System.out.println("La cantidad de apariciones de "+ artistName + " en " + country + " el día " + date + " es de " + artistAppearances.get(artistName) + " aparicion (es).");
     }
 
     @Override
@@ -231,9 +225,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             if (!lastDate.isEqual(firstDate)){
                 betweenDates.addLast(lastDate);
             }
-        } catch (DateTimeParseException e) {
-            System.err.println("Fecha no válida");
-        }
+        } catch (DateTimeParseException e) {}
 
 
         if (firstDate.isAfter(lastDate)) {
@@ -273,9 +265,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                             counter++;
                         }
                     }
-                } catch (NullPointerException | InvalidKeyException | EmptyHashException e) {
-                    System.out.println("Fecha no encontrada");
-                }
+                } catch (NullPointerException | InvalidKeyException | EmptyHashException e) {}
             }
         }
         System.out.println("Cantidad de canciones con un tempo entre " + tempo1 + " y " + tempo2 + " en el rango de fechas seleccionado: " + counter);
