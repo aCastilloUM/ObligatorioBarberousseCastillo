@@ -22,19 +22,20 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
 
     public ObligatoryMethodsImpl(String csvPath) {
 
-//        Runtime runtime = Runtime.getRuntime();
-//        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
-//        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+        /* Este código fue lo que utilizamos para ir midiendo el consumo de memoria RAM
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+         */
 
         file = new ReadCSV();
         file.uploadCSV(csvPath);
 
         // Fin de la medición de memoria
-        //runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
-        //long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
-
-
-        //System.out.println("Memoria utilizada por el método reader en kilobytes: " + (memoryAfter - memoryBefore) / 1024);
+        /* runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Memoria utilizada por el método reader en kilobytes: " + (memoryAfter - memoryBefore) / 1024);
+         */
         }
 
     @Override
@@ -44,7 +45,6 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         Runtime runtime = Runtime.getRuntime();
         runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
         long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
-
 
         System.out.println();
         System.out.println("TOP 10 CANCIONES EN LA FECHA " + date);
@@ -60,12 +60,11 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             System.out.println("Fecha no disponible");
         }
 
-
         // Fin de la medición de memoria
         runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
         long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
 
-        //System.out.println("Memoria utilizada por el método top10Song en kilobytes: " + (memoryAfter - memoryBefore) / 1024);
+        //System.out.println("Memoria utilizada por el método top10Song en bytes: " + (memoryAfter - memoryBefore));
     }
 
     LinkedList<ListNode<String>> dateSongs = new LinkedList<>();
@@ -122,6 +121,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                     top5.delete(); // Elimina el elemento en el heap por clave
                 }
             }
+
         } catch (InvalidKeyException | NullPointerException e){
             System.out.println("Error: No se pudo procesar las canciones para la fecha especificada. ");
         }
@@ -155,9 +155,8 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             if (!lastDate.isEqual(firstDate)) {
                 betweenDates.addLast(lastDate);
             }
-        } catch (DateTimeParseException e) {
-        }
 
+        } catch (DateTimeParseException e) {}
 
         if (firstDate.isAfter(lastDate)) {
             LocalDate temp = firstDate;
@@ -202,6 +201,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                 } catch (NullPointerException | InvalidKeyException e) {}
             }
         }
+
         for (int i = 0; i < artistAppearances.getTable().length; i++) {
             if (artistAppearances.getTable()[i] != null) {
                 artist.add(artistAppearances.getTable()[i].getValue(), artistAppearances.getTable()[i].getKey());
@@ -234,6 +234,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         artistAppearances.add(artistName, 0);
         LocalDate localDate = null;
         System.out.println();
+
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             localDate = LocalDate.parse(date, formatter);
@@ -259,7 +260,8 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                     }
                 }
             }
-        }catch (InvalidKeyException e){}
+
+        } catch (InvalidKeyException e){}
         System.out.println("La cantidad de apariciones de "+ artistName +  "el día " + date + " es de " + artistAppearances.get(artistName) + " aparicion (es).");
 
         runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
@@ -290,7 +292,6 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             }
         } catch (DateTimeParseException e) {}
 
-
         if (firstDate.isAfter(lastDate)) {
             LocalDate temp = firstDate;
             firstDate = lastDate;
@@ -302,8 +303,6 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             tempo1 = tempo2;
             tempo2 = temp;
         }
-
-
 
         for (int i = 0; i<this.dates.length; i++){
             LocalDate date = LocalDate.parse(this.dates[i]);
@@ -331,6 +330,7 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
                 } catch (NullPointerException | InvalidKeyException | EmptyHashException e) {}
             }
         }
+
         System.out.println("Cantidad de canciones con un tempo entre " + tempo1 + " y " + tempo2 + " en el rango de fechas seleccionado: " + counter);
 
         runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
@@ -390,10 +390,4 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             "2023-11-08", "2023-11-07", "2023-11-06", "2023-11-05", "2023-11-04", "2023-11-03", "2023-11-02", "2023-11-01",
             "2023-10-31", "2023-10-30", "2023-10-29", "2023-10-28", "2023-10-27", "2023-10-26", "2023-10-25", "2023-10-24",
             "2023-10-23", "2023-10-22", "2023-10-21", "2023-10-20", "2023-10-19", "2023-10-18"};
-
-    /* Fechas que no estan
-            2024-03-17
-            2024-03-15
-            2023-11-18
-     */
 }

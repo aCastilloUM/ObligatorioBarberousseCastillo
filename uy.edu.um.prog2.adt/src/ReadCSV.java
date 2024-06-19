@@ -94,7 +94,6 @@ public class ReadCSV {
                         double tempo = Double.parseDouble(attributes[24]);
                         Song s = new Song(attributes[0], attributes[1], attributes[3].trim(), daily_rank, tempo);
                         songs.add(attributes[0], s);
-
                     }
 
                     // Usar StringBuilder para crear hashkey
@@ -110,7 +109,6 @@ public class ReadCSV {
                         world.get(hashkey).addLast(attributes[0]);
                         keyActual = hashkey;
                     }
-
                 }
                 counter++;
             }
@@ -120,7 +118,6 @@ public class ReadCSV {
             throw new RuntimeException(e);
         }
     }
-
 
     public void createList(String hashKey){
         LinkedList<String> global = new LinkedList<>();
