@@ -21,12 +21,31 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
     ReadCSV file;
 
     public ObligatoryMethodsImpl(String csvPath) {
+
+//        Runtime runtime = Runtime.getRuntime();
+//        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+//        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
         file = new ReadCSV();
         file.uploadCSV(csvPath);
-    }
+
+        // Fin de la medición de memoria
+        //runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        //long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+
+
+        //System.out.println("Memoria utilizada por el método reader en kilobytes: " + (memoryAfter - memoryBefore) / 1024);
+        }
 
     @Override
     public void top10Song(String country, String date) throws EmptyHashException, InvalidKeyException {
+
+        // Inicio de la medición de memoria
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
+
         System.out.println();
         System.out.println("TOP 10 CANCIONES EN LA FECHA " + date);
         try {
@@ -40,12 +59,24 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         } catch (NullPointerException | InvalidKeyException e){
             System.out.println("Fecha no disponible");
         }
+
+
+        // Fin de la medición de memoria
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+
+        //System.out.println("Memoria utilizada por el método top10Song en kilobytes: " + (memoryAfter - memoryBefore) / 1024);
     }
 
     LinkedList<ListNode<String>> dateSongs = new LinkedList<>();
 
     @Override
-    public void top5RepeatedSongs(String date) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException, EmptyStackException.InvalidKeyException {
+    public void top5RepeatedSongs(String date) throws EmptyHashException, InvalidKeyException.EmptyHeapException {
+
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
         int counter = 0;
         Hash<String, Integer> songsAppearances = new Hash<>(5);
         Heap<Integer, String> top5 = new Heap<>();
@@ -94,10 +125,20 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
         } catch (InvalidKeyException | NullPointerException e){
             System.out.println("Error: No se pudo procesar las canciones para la fecha especificada. ");
         }
+
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+
+        //System.out.println("Memoria utilizada por el método top5RepeatedSongs en bytes: " + (memoryAfter - memoryBefore));
     }
 
     @Override
     public void top7Artist(String first, String last) throws EmptyHashException, InvalidKeyException, InvalidKeyException.EmptyHeapException{
+
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
         MyList<LocalDate> betweenDates = new LinkedList<>();
         Heap<Integer, String> artist = new Heap<>();
         Hash<String, Integer> artistAppearances = new Hash<>(7);
@@ -176,10 +217,19 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             artist.delete();
         }
 
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+
+        //System.out.println("Memoria utilizada por el método top7Artist en bytes: " + (memoryAfter - memoryBefore));
     }
 
     @Override
     public void artistAppearances(String artistName, String date) throws EmptyHashException, InvalidKeyException {
+
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
         Hash<String, Integer> artistAppearances = new Hash<>(1);
         artistAppearances.add(artistName, 0);
         LocalDate localDate = null;
@@ -211,10 +261,20 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             }
         }catch (InvalidKeyException e){}
         System.out.println("La cantidad de apariciones de "+ artistName +  "el día " + date + " es de " + artistAppearances.get(artistName) + " aparicion (es).");
+
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+
+        //System.out.println("Memoria utilizada por el método artistAppearances en bytes: " + (memoryAfter - memoryBefore));
     }
 
     @Override
     public void tempFunction(double tempo1, double tempo2, String first, String last){
+
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
         MyList<LocalDate> betweenDates = new LinkedList<>();
         LocalDate firstDate = null;
         LocalDate lastDate = null;
@@ -272,6 +332,11 @@ public class ObligatoryMethodsImpl implements ObligatoryMethods {
             }
         }
         System.out.println("Cantidad de canciones con un tempo entre " + tempo1 + " y " + tempo2 + " en el rango de fechas seleccionado: " + counter);
+
+        runtime.gc(); // Correr el garbage collector para liberar memoria no utilizada
+        long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+
+        //System.out.println("Memoria utilizada por el método tempFunction en bytes: " + (memoryAfter - memoryBefore));
     }
 
     // Metodo recursivo para mantener el orden O(n) en la funcion top5RepeatedSongs
